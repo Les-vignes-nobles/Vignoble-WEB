@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VignobleWEB", "VignobleWEB\VignobleWEB.csproj", "{2680FC95-478E-4612-997A-462373BB52C0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VignobleWEB.Core.Application", "VignobleWEB.Core.Application\VignobleWEB.Core.Application.csproj", "{2B14ADD4-4854-4FE4-B816-597791FDB73B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VignobleWEB.Core.Infrastructure", "VignobleWEB.Core.Infrastructure\VignobleWEB.Core.Infrastructure.csproj", "{8BDEF169-3A1F-494A-9109-32DEB82AD86B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VignobleWEB.Core.Interfaces", "VignobleWEB.Core.Interfaces\VignobleWEB.Core.Interfaces.csproj", "{54A6263B-DDB3-447D-B160-2475630A3AA8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VignobleWEB.Core.Models", "VignobleWEB.Core.Models\VignobleWEB.Core.Models.csproj", "{61EF934E-C6CD-4127-8A21-6E47E7F7389E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VignobleWEB.Tests.TestsUnitaires", "VignobleWEB.Tests.TestsUnitaires\VignobleWEB.Tests.TestsUnitaires.csproj", "{37C36DD0-8E5E-4283-A328-B9A15F83A4C4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2680FC95-478E-4612-997A-462373BB52C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2680FC95-478E-4612-997A-462373BB52C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2680FC95-478E-4612-997A-462373BB52C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2680FC95-478E-4612-997A-462373BB52C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B14ADD4-4854-4FE4-B816-597791FDB73B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B14ADD4-4854-4FE4-B816-597791FDB73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B14ADD4-4854-4FE4-B816-597791FDB73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B14ADD4-4854-4FE4-B816-597791FDB73B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BDEF169-3A1F-494A-9109-32DEB82AD86B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BDEF169-3A1F-494A-9109-32DEB82AD86B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BDEF169-3A1F-494A-9109-32DEB82AD86B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BDEF169-3A1F-494A-9109-32DEB82AD86B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54A6263B-DDB3-447D-B160-2475630A3AA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54A6263B-DDB3-447D-B160-2475630A3AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54A6263B-DDB3-447D-B160-2475630A3AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54A6263B-DDB3-447D-B160-2475630A3AA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61EF934E-C6CD-4127-8A21-6E47E7F7389E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61EF934E-C6CD-4127-8A21-6E47E7F7389E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61EF934E-C6CD-4127-8A21-6E47E7F7389E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61EF934E-C6CD-4127-8A21-6E47E7F7389E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37C36DD0-8E5E-4283-A328-B9A15F83A4C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37C36DD0-8E5E-4283-A328-B9A15F83A4C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37C36DD0-8E5E-4283-A328-B9A15F83A4C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37C36DD0-8E5E-4283-A328-B9A15F83A4C4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18435859-6E0D-4A22-B28B-8D603EDAAFE3}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VignobleWEB.Core.Infrastructure\VignobleWEB.Core.Infrastructure.csproj" />
+    <ProjectReference Include="..\VignobleWEB.Core.Interfaces\VignobleWEB.Core.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>
