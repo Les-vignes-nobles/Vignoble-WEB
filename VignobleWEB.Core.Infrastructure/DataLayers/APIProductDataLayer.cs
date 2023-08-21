@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using VignobleWEB.Core.Infrastructure.ExceptionPersonnalisee;
 using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
 using VignobleWEB.Core.Models;
 
@@ -34,11 +35,11 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
             {
                 client.BaseAddress = new Uri(url);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKV1RTZXJ2aWNlQWNjZXNzVG9rZW4iLCJqdGkiOiJhNTFlY2NlZi1iZmEyLTRkYWYtYjQyYy0wZTEwY2U3NWM2OWUiLCJpYXQiOiIwOC8xOS8yMDIzIDA5OjM3OjU0IiwiVXNlcklkIjoiMSIsIkRpc3BsYXlOYW1lIjoiVXNlcjEiLCJleHAiOjE2OTI0NDE0NzQsImlzcyI6IkpXVFZpZ25vYmxlQVBJIiwiYXVkIjoiSldUU2VydmljZVZpZ25vYmxlQVBJIn0.f5nF_DDodBqwOshLT8q0QnykMST4Hwj1kpzN-pmyJ_8");
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKV1RTZXJ2aWNlQWNjZXNzVG9rZW4iLCJqdGkiOiIxYTBjZDkxMS0wZWM1LTQyYTktOGEzMC1iMzU4NThmZGUyMTciLCJpYXQiOiIwOC8yMS8yMDIzIDA4OjU1OjU3IiwiVXNlcklkIjoiMSIsIkRpc3BsYXlOYW1lIjoiVXNlcjEiLCJleHAiOjE2OTI2MTE3NTcsImlzcyI6IkpXVFZpZ25vYmxlQVBJIiwiYXVkIjoiSldUU2VydmljZVZpZ25vYmxlQVBJIn0.85yCzHZNBWt8lbAIKD4pW13DU4B8GwZA3Ri3YJUdFYY");
 
                 HttpResponseMessage response = client.GetAsync(url).Result;
 
-                if (!response.IsSuccessStatusCode) { throw new Exception(); }
+                if (!response.IsSuccessStatusCode) { throw new DataLayersException(response.StatusCode.ToString()); }
 
                 string json = response.Content.ReadAsStringAsync().Result;
 

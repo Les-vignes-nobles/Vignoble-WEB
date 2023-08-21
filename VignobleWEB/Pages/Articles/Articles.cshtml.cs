@@ -4,7 +4,7 @@ using VignobleWEB.Core.Interfaces.Application.Repositories;
 using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
 using VignobleWEB.Core.Models;
 
-namespace VignobleWEB.Pages
+namespace VignobleWEB.Pages.Articles
 {
     public class ArticlesModel : PageModel
     {
