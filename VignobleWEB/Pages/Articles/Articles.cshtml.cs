@@ -46,7 +46,7 @@ namespace VignobleWEB.Pages.Articles
         #region M�thodes priv�es
         private void RecupererListeProduits()
         {
-            ListProducts = _productRepository.GetAllProducts();
+            ListProducts = _productRepository.GetAllActiveProducts();
         }
         #endregion
 

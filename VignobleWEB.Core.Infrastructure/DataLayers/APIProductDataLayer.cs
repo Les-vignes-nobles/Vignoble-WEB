@@ -35,7 +35,7 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
             {
                 client.BaseAddress = new Uri(url);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKV1RTZXJ2aWNlQWNjZXNzVG9rZW4iLCJqdGkiOiIxYTBjZDkxMS0wZWM1LTQyYTktOGEzMC1iMzU4NThmZGUyMTciLCJpYXQiOiIwOC8yMS8yMDIzIDA4OjU1OjU3IiwiVXNlcklkIjoiMSIsIkRpc3BsYXlOYW1lIjoiVXNlcjEiLCJleHAiOjE2OTI2MTE3NTcsImlzcyI6IkpXVFZpZ25vYmxlQVBJIiwiYXVkIjoiSldUU2VydmljZVZpZ25vYmxlQVBJIn0.85yCzHZNBWt8lbAIKD4pW13DU4B8GwZA3Ri3YJUdFYY");
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKV1RTZXJ2aWNlQWNjZXNzVG9rZW4iLCJqdGkiOiIzZDVmYzVjZC1mZDJkLTQ5NGEtOGEyZi1iYWU2NTgxMTYwNzciLCJpYXQiOiIwOC8yMS8yMDIzIDEwOjUwOjIzIiwiVXNlcklkIjoiMSIsIkRpc3BsYXlOYW1lIjoiVXNlcjEiLCJleHAiOjE2OTI2MTg2MjMsImlzcyI6IkpXVFZpZ25vYmxlQVBJIiwiYXVkIjoiSldUU2VydmljZVZpZ25vYmxlQVBJIn0.WOn0UP-mGO-z3SYya_wjE0X8nA5anbXiO8hT9Nitj3g");
 
                 HttpResponseMessage response = client.GetAsync(url).Result;
 

@@ -30,11 +30,20 @@ namespace VignobleWEB.Core.Application.Repositories
         #region Méthodes publiques
 
         #region Read (Lecture)
-        public List<Product> GetAllProducts()
+        public List<Product> GetAllActiveProducts()
         {
             try
             {
-                return _dataLayer.GetAllProducts();
+                List<Product> listAllProducts = _dataLayer.GetAllProducts();
+                
+                List<Product> listActiveProducts = new List<Product>();
+
+                foreach (Product product in listAllProducts)
+                {
+                    listActiveProducts.Add(product);
+                }
+                
+                return listActiveProducts;
             }
             catch(DataLayersException ex)
             {
