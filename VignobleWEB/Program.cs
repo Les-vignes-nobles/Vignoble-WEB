@@ -6,7 +6,6 @@ using VignobleWEB.Core.Infrastructure.DataLayers;
 using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
 using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
-using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -19,14 +18,6 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
 
 // Add services to the container.
-builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
-   .AddNegotiate();
-
-builder.Services.AddAuthorization(options =>
-{
-    // By default, all incoming requests will be authorized according to the default policy.
-    options.FallbackPolicy = options.DefaultPolicy;
-});
 builder.Services.AddRazorPages();
 
 //Ajout du "Context" de la base de données
