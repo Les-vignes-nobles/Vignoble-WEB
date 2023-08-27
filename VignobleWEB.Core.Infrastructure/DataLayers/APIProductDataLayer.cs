@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 using VignobleWEB.Core.Infrastructure.ExceptionPersonnalisee;
 using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
 using VignobleWEB.Core.Models;
@@ -14,7 +10,9 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
     public class APIProductDataLayer : IProductDataLayer
     {
         #region Champs
-        private const string baseUrl = "http://82.165.237.163:5000/api/Product";
+        IConfiguration config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+        private const string baseUrl = config["ConnectionStrings:UrlAPIConnection"];
         #endregion
 
         #region Constructeur
