@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using VignobleWEB.Core.Infrastructure.ExceptionPersonnalisee;
 using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
+using VignobleWEB.Core.Interfaces.Infrastructure.Token;
 using VignobleWEB.Core.Models;
 
 namespace VignobleWEB.Core.Infrastructure.DataLayers
@@ -12,13 +13,15 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #region Champs
         IConfiguration config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-        private const string baseUrl = config["ConnectionStrings:UrlAPIConnection"];
+        private readonly ITokenAPI _tokenAPI;
+
+        //private string baseUrl = config["ConnectionStrings:UrlAPIConnection"];
         #endregion
 
         #region Constructeur
-        public APIProductDataLayer() 
+        public APIProductDataLayer(ITokenAPI tokenAPI) 
         {
-        
+            _tokenAPI = tokenAPI;
         }
         #endregion
 
@@ -27,15 +30,26 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #region Read (Lecture)
         public List<Product> GetAllProducts()
         {
-            string url = $"{baseUrl}/GetAllProducts";
+            string url = $"{config["ConnectionStrings:UrlAPIConnection"]}/Product/GetAllProducts";
+            string token = _tokenAPI.readTokenAPI();
 
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(url);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKV1RTZXJ2aWNlQWNjZXNzVG9rZW4iLCJqdGkiOiIzZDVmYzVjZC1mZDJkLTQ5NGEtOGEyZi1iYWU2NTgxMTYwNzciLCJpYXQiOiIwOC8yMS8yMDIzIDEwOjUwOjIzIiwiVXNlcklkIjoiMSIsIkRpc3BsYXlOYW1lIjoiVXNlcjEiLCJleHAiOjE2OTI2MTg2MjMsImlzcyI6IkpXVFZpZ25vYmxlQVBJIiwiYXVkIjoiSldUU2VydmljZVZpZ25vYmxlQVBJIn0.WOn0UP-mGO-z3SYya_wjE0X8nA5anbXiO8hT9Nitj3g");
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
                 HttpResponseMessage response = client.GetAsync(url).Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    _tokenAPI.getTokenAPI();
+                    token = _tokenAPI.readTokenAPI();
+                    client.DefaultRequestHeaders.Remove("Authorization");
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                }
+
+                response = client.GetAsync(url).Result;
 
                 if (!response.IsSuccessStatusCode) { throw new DataLayersException(response.StatusCode.ToString()); }
 
@@ -50,7 +64,7 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
 
         #endregion
 
-        #region Méthodes publiques
+        #region Méthodes privées
         #endregion
     }
 }
