@@ -28,36 +28,38 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #region Méthodes publiques
 
         #region Read (Lecture)
-        public List<Product> GetAllProducts()
+        public async Task<List<Product>> GetAllProducts()
         {
             string url = $"{config["ConnectionStrings:UrlAPIConnection"]}/Product/GetAllProducts";
-            string token = _tokenAPI.readTokenAPI();
-
+            string token = _tokenAPI.ReadTokenAPI();
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(url);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
-                HttpResponseMessage response = client.GetAsync(url).Result;
+                HttpResponseMessage response = await client.GetAsync(url);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    _tokenAPI.getTokenAPI();
-                    token = _tokenAPI.readTokenAPI();
+                    token = await _tokenAPI.GetTokenAPI();
                     client.DefaultRequestHeaders.Remove("Authorization");
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                    response = await client.GetAsync(url);
+
+                    if (!response.IsSuccessStatusCode)
+                        throw new DataLayersException(response.StatusCode.ToString());
+
+                    var json = await response.Content.ReadAsStringAsync();
+
+                    return JsonConvert.DeserializeObject<List<Product>>(json) ?? new List<Product>();
+
                 }
-
-                response = client.GetAsync(url).Result;
-
-                if (!response.IsSuccessStatusCode) { throw new DataLayersException(response.StatusCode.ToString()); }
-
-                string json = response.Content.ReadAsStringAsync().Result;
-
-                List<Product> listProducts = JsonConvert.DeserializeObject<List<Product>>(json);
-
-                return listProducts;
+                else
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<List<Product>>(json) ?? new List<Product>();
+                }
             }
         }
         #endregion

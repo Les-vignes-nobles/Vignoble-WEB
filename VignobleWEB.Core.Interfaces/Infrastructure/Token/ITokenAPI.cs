@@ -8,10 +8,10 @@ namespace VignobleWEB.Core.Interfaces.Infrastructure.Token
 {
     public interface ITokenAPI
     {
-        string readTokenAPI();
+        string ReadTokenAPI();
 
-        void updateTokenAPI(string token);
+        void UpdateTokenAPI(string token);
 
-        Task getTokenAPI();
+        Task<string> GetTokenAPI();
     }
 }

@@ -1,15 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Reflection.Metadata;
 using System.Text;
-using System.Threading.Tasks;
 using VignobleWEB.Core.Infrastructure.ExceptionPersonnalisee;
 using VignobleWEB.Core.Interfaces.Infrastructure.Token;
-using VignobleWEB.Core.Models;
 
 namespace VignobleWEB.Core.Infrastructure.Token
 {
@@ -17,24 +9,21 @@ namespace VignobleWEB.Core.Infrastructure.Token
     {
         #region Champs
         IConfiguration config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-
-        private string Token = null;
+        private string token;
 
         #endregion
 
-        public TokenAPI() { }
-
-        public string readTokenAPI()
+        public string ReadTokenAPI()
         {
-            return Token;
+            return token;
         }
 
-        public void updateTokenAPI(string token)
+        public void UpdateTokenAPI(string token)
         {
-            Token = token;
+            this.token = token;
         }
 
-        public async Task getTokenAPI()
+        public async Task<string> GetTokenAPI()
         {
             string url = $"{config["ConnectionStrings:UrlAPIConnection"]}/Login";
 
@@ -45,15 +34,12 @@ namespace VignobleWEB.Core.Infrastructure.Token
                 var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
-                if (!response.IsSuccessStatusCode) { throw new DataLayersException(response.StatusCode.ToString()); }
+                if (!response.IsSuccessStatusCode)
+                    throw new DataLayersException(response.StatusCode.ToString());
 
-                string json = response.Content.ReadAsStringAsync().Result;
-
-                //string token = JsonConvert.DeserializeObject<string>(json);
-                string token = await response.Content.ReadAsStringAsync();
-
-                updateTokenAPI(token);
-
+                var resp = await response.Content.ReadAsStringAsync();
+                UpdateTokenAPI(resp);
+                return resp;
             }
         }
     }
