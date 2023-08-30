@@ -1,0 +1,37 @@
+﻿@page "/Articles"
+@model VignobleWEB.Pages.Articles.ArticlesModel
+@{
+    ViewData["Title"] = "Articles";
+
+    @if (Model.ListProducts.Count > 0)
+    {
+        <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
+            <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
+                @foreach (Core.Models.Product item in Model.ListProducts)
+                { 
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <img src=@item.Image class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <div class="clearfix mb-3">
+                                    <span class="float-start badge rounded-pill bg-success">@item.UnitPrice &euro;</span>
+                                </div>
+                                <h4 class="card-title">@item.Name</h4>
+                                <h5 class="card-text">@item.Description</h5>
+                                <div class="d-grid gap-2 my-4">
+                                    <a href="#" class="btn btn-warning">Plus d'info</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <strong>
+            Aucun article ne correspond à vos critères de recherche
+        </strong>
+    }
+}
