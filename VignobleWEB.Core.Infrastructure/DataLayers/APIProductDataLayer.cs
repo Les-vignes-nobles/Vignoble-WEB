@@ -12,10 +12,7 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
     {
         #region Champs
         IConfiguration config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-
         private readonly ITokenAPI _tokenAPI;
-
-        //private string baseUrl = config["ConnectionStrings:UrlAPIConnection"];
         #endregion
 
         #region Constructeur
@@ -32,6 +29,7 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         {
             string url = $"{config["ConnectionStrings:UrlAPIConnection"]}/Product/GetAllProducts";
             string token = _tokenAPI.ReadTokenAPI();
+
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(url);
