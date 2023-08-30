@@ -1,6 +1,5 @@
 using VignobleWEB.Core.Application.Tools;
 using VignobleWEB.Core.Application.Repositories;
-using VignobleWEB.Core.Infrastructure.Databases;
 using VignobleWEB.Core.Infrastructure.Tools;
 using VignobleWEB.Core.Infrastructure.DataLayers;
 using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
@@ -9,6 +8,8 @@ using VignobleWEB.Core.Interfaces.Application.Repositories;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using VignobleWEB.Core.Interfaces.Infrastructure.Token;
+using VignobleWEB.Core.Infrastructure.Token;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,17 +30,12 @@ builder.Services.AddAuthorization(options =>
 });
 builder.Services.AddRazorPages();
 
-//Ajout du "Context" de la base de données
-builder.Services.AddDbContext<ExampleDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerContextExample"));
-});
-
 //Permet lors de l'utilisation d'une interface de table en base de données de le lier au DataLayer associé
-builder.Services.AddScoped<IExampleDataLayer, SqlServerExampleDataLayer>();
+builder.Services.AddScoped<IProductDataLayer, APIProductDataLayer>();
+builder.Services.AddScoped<ITokenAPI, TokenAPI>();
 
 //Permet lors de l'utilisation d'une interface de repository de le lier à son repository associé
-builder.Services.AddScoped<IExampleRepository, ExampleRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 //Ajout du scope sur les Tools Infrastructure
 builder.Services.AddScoped<ILogInfrastructure, LogInfrastructure>();

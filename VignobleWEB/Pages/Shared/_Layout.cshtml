@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"  />
     <title>@ViewData["Title"] - VignobleWEB</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -12,7 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">VignobleWEB</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">STIVE</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,13 +20,19 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="Articles/Articles">Article</a>
                         </li>
                     </ul>
-                    <p class="nav navbar-text">Hello, @User.Identity?.Name!</p>
+                    <img class="litlesize" src="img/basket.png" /> 
+                </div>
+                <div class="conteneur">
+                    <img class="litlesize Image" src="img/user.png" alt="Image" />
+                    <div class="menu">
+                        <ul>
+                            <li><a href="#">Se connecter</a></li>
+                            <li><a href="#">Créer un compte</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -46,7 +52,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

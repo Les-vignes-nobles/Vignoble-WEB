@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -19,4 +19,52 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.litlesize {
+    width: 40px;
+    height: 40px;
+    margin : 5px;
+}
+
+.conteneur {
+    position: relative;
+    display: inline-block;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.menu a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    padding: 5px;
+}
+
+.menu a:hover {
+    background-color: #ddd;
+}
+
+.conteneur:hover .menu,
+.menu:hover {
+    display: block;
+}
+
+.conteneur:hover .menu,
+.menu:hover {
+    display: block;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
 }
