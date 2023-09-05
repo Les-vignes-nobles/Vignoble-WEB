@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+
 using VignobleWEB.Core.Infrastructure.ExceptionPersonnalisee;
 using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
 using VignobleWEB.Core.Interfaces.Infrastructure.Token;
@@ -11,14 +13,15 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
     public class APIProductDataLayer : IProductDataLayer
     {
         #region Champs
-        IConfiguration config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+        private readonly IOptions<ApiSettings> _config;
         private readonly ITokenAPI _tokenAPI;
         #endregion
 
         #region Constructeur
-        public APIProductDataLayer(ITokenAPI tokenAPI) 
+        public APIProductDataLayer(IOptions<ApiSettings> config, ITokenAPI tokenAPI)
         {
-            _tokenAPI = tokenAPI;
+            _config = config;
         }
         #endregion
 
@@ -27,16 +30,15 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #region Read (Lecture)
         public async Task<List<Product>> GetAllProducts()
         {
-            string url = $"{config["ConnectionStrings:UrlAPIConnection"]}/Product/GetAllProducts";
             string token = _tokenAPI.ReadTokenAPI();
 
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new Uri(url);
+                client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
-                HttpResponseMessage response = await client.GetAsync(url);
+                HttpResponseMessage response = client.GetAsync($"{client.BaseAddress}/Product/GetAllProducts").Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
