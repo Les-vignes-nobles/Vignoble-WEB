@@ -25,5 +25,8 @@ public static class ServicesExtension
         //Ajout du scope sur les Tools Repository
         services.TryAddScoped<ILogRepository, LogRepository>();
 
+        //Ajout du scope pour l'API
+        services.TryAddScoped<ITokenAPI, TokenAPI>();
+
     }
 }
