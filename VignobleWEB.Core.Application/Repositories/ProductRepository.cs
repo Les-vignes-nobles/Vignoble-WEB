@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VignobleWEB.Core.Application.RepositoriesException;
+﻿using VignobleWEB.Core.Application.RepositoriesException;
 using VignobleWEB.Core.Infrastructure.ExceptionPersonnalisee;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
 using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
@@ -30,11 +25,11 @@ namespace VignobleWEB.Core.Application.Repositories
         #region Méthodes publiques
 
         #region Read (Lecture)
-        public List<Product> GetAllActiveProducts()
+        public async Task<List<Product>> GetAllActiveProducts()
         {
             try
             {
-                List<Product> listAllProducts = _dataLayer.GetAllProducts();
+                List<Product> listAllProducts = await _dataLayer.GetAllProducts();
                 
                 List<Product> listActiveProducts = new List<Product>();
 

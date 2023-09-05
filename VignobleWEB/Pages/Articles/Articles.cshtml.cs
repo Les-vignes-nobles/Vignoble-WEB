@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
 using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
 using VignobleWEB.Core.Models;
@@ -20,7 +21,6 @@ namespace VignobleWEB.Pages.Articles
             _logTools = logTools;
             _productRepository = productRepository;
         }
-
         #endregion
 
         #region M�thodes publique
@@ -46,7 +46,7 @@ namespace VignobleWEB.Pages.Articles
         #region M�thodes priv�es
         private void RecupererListeProduits()
         {
-            ListProducts = _productRepository.GetAllActiveProducts();
+            ListProducts = _productRepository.GetAllActiveProducts().Result;
         }
         #endregion
 

@@ -13,6 +13,6 @@ namespace VignobleWEB.Core.Interfaces.Infrastructure.DataLayers
         /// Récupere une liste de produits
         /// </summary>
         /// <returns>Retourne la liste de tout les produits</returns>
-        List<Product> GetAllProducts();
+        Task<List<Product>> GetAllProducts();
     }
 }
