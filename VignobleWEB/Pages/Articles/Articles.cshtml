@@ -1,4 +1,4 @@
-﻿@page "/Articles"
+﻿@page "/Articles/index"
 @model VignobleWEB.Pages.Articles.ArticlesModel
 @{
     ViewData["Title"] = "Articles";
@@ -11,7 +11,7 @@
                 { 
                     <div class="col">
                         <div class="card h-100 shadow-sm">
-                            <img src=@item.Image class="card-img-top" alt="...">
+                            <img src=/@item.Image class="card-img-top" alt="...">
                             <div class="card-body">
                                 <div class="clearfix mb-3">
                                     <span class="float-start badge rounded-pill bg-success">@item.UnitPrice &euro;</span>

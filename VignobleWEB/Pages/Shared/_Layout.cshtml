@@ -6,6 +6,8 @@
     <title>@ViewData["Title"] - VignobleWEB</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/SignUp.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/SignIn.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/VignobleWEB.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -20,17 +22,17 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="Articles/Articles">Article</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Articles/Articles">Article</a>
                         </li>
                     </ul>
-                    <img class="litlesize" src="img/basket.png" /> 
+                    <img class="litlesize" src="/img/basket.png" /> 
                 </div>
                 <div class="conteneur">
-                    <img class="litlesize Image" src="img/user.png" alt="Image" />
+                    <img class="litlesize Image" src="/img/user.png" alt="Image" />
                     <div class="menu">
                         <ul>
-                            <li><a asp-area="" asp-page="Login/SignIn">Se connecter</a></li>
-                            <li><a asp-area="" asp-page="Login/SignUp">Créer un compte</a></li>
+                            <li><a asp-area="" asp-page="/Login/SignIn">Se connecter</a></li>
+                            <li><a asp-area="" asp-page="/Login/SignUp">Créer un compte</a></li>
                         </ul>
                     </div>
                 </div>

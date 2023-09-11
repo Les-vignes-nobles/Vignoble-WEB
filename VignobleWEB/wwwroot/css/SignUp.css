@@ -1,54 +1,18 @@
-﻿.border-md {
-    border-width: 2px;
+﻿*[role="form"] {
+    max-width: 530px;
+    padding: 15px;
+    margin: 0 auto;
+    border-radius: 0.3em;
+    background-color: #f2f2f2;
 }
 
-.btn-facebook {
-    background: #405D9D;
-    border: none;
-}
-
-    .btn-facebook:hover, .btn-facebook:focus {
-        background: #314879;
+    *[role="form"] h2 {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 40px;
+        font-weight: 600;
+        color: #000000;
+        margin-top: 5%;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 4px;
     }
-
-.btn-twitter {
-    background: #42AEEC;
-    border: none;
-}
-
-    .btn-twitter:hover, .btn-twitter:focus {
-        background: #1799e4;
-    }
-
-
-
-/*
-*
-* ==========================================
-* FOR DEMO PURPOSES
-* ==========================================
-*
-*/
-
-body {
-    min-height: 100vh;
-}
-
-.form-control:not(select) {
-    padding: 1.5rem 0.5rem;
-}
-
-select.form-control {
-    height: 52px;
-    padding-left: 0.5rem;
-}
-
-.form-control::placeholder {
-    color: #ccc;
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-
-.form-control:focus {
-    box-shadow: none;
-}

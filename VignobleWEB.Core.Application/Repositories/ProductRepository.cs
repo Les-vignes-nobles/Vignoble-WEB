@@ -35,7 +35,10 @@ namespace VignobleWEB.Core.Application.Repositories
 
                 foreach (Product product in listAllProducts)
                 {
-                    listActiveProducts.Add(product);
+                    if (product.Activated == true)
+                    {
+                        listActiveProducts.Add(product);
+                    }
                 }
                 
                 return listActiveProducts;
