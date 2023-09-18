@@ -37,14 +37,14 @@
 			}
 		},
 		password: {
-			required: " Please enter password"
+			required: " Veuillez entrer un mot de passe"
 		},
 		birthDate: {
-			required: " Please enter birthdate"
+			required: " Veuillez entrer une date d'anniversaire"
 		},
 		email: {
-			required: ' Please enter email',
-			email: ' Please enter valid email'
+			required: ' Veuillez entrer une adresse mail',
+			email: ' Veuillez entrer une adresse mail valide'
 		},
 		weight: {
 			required: " Please enter your weight",

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
+using VignobleWEB.Core.Models;
 
 namespace VignobleWEB.Pages.Login
 {
@@ -30,7 +31,7 @@ namespace VignobleWEB.Pages.Login
             }
             catch (Exception ex)
             {
-                _logTools.LogErreur("Une erreur s'est produite lors du GET sur la page index des r�f�rences (Liste) !", ex);
+                _logTools.LogErreur("Une erreur s'est produite lors du GET sur la page de création de compte !", ex);
             }
 
             return result;
@@ -39,11 +40,13 @@ namespace VignobleWEB.Pages.Login
         #endregion
 
         #region M�thodes priv�es
-        
+
         #endregion
 
         #region Propriétés
+        public User user { get; set; } = new User();
 
+        public Customer customer { get; set; } = new();
         #endregion
     }
 }
