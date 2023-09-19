@@ -37,16 +37,42 @@ namespace VignobleWEB.Pages.Login
             return result;
         }
 
+        public IActionResult OnPost()
+        {
+            IActionResult result = Page();
+
+            try
+            {
+               
+            }
+            catch (Exception ex)
+            {
+
+                _logTools.LogErreur("Une erreur s'est produite lors du POST sur la page de création de compte !", ex);
+            }
+            return result;
+        }
+
         #endregion
 
         #region M�thodes priv�es
 
+        
+
         #endregion
 
         #region Propriétés
+        [BindProperty]
         public User user { get; set; } = new User();
 
+        [BindProperty]
         public Customer customer { get; set; } = new();
+
+        [BindProperty]
+        public string Password { get; set; } = string.Empty;
+
+        [BindProperty]
+        public string passwordVerified { get; set; } = string.Empty;
         #endregion
     }
 }
