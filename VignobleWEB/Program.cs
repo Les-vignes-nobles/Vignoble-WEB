@@ -23,10 +23,12 @@ builder.Services.AddRazorPages();
 
 //Permet lors de l'utilisation d'une interface de table en base de données de le lier au DataLayer associé
 builder.Services.AddScoped<IProductDataLayer, APIProductDataLayer>();
+builder.Services.AddScoped<IAccountDataLayer, APIAccountDataLayer>();
 builder.Services.AddScoped<ITokenAPI, TokenAPI>();
 
 //Permet lors de l'utilisation d'une interface de repository de le lier à son repository associé
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 //Ajout du scope sur les Tools Infrastructure
 builder.Services.AddScoped<ILogInfrastructure, LogInfrastructure>();

@@ -13,6 +13,6 @@ namespace VignobleWEB.Core.Interfaces.Infrastructure.DataLayers
         /// Envoie la requête à l'API pour créer le compte
         /// </summary>
         /// <returns></returns>
-        Task<User> CreateUser();
+        Task<User> CreateUser(User user, Customer customer);
     }
 }

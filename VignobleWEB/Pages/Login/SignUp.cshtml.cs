@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Cryptography;
+using VignobleWEB.Core.Interfaces.Application.Repositories;
 using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
 using VignobleWEB.Core.Models;
+using VignobleWEB.Properties;
 
 namespace VignobleWEB.Pages.Login
 {
@@ -9,13 +12,15 @@ namespace VignobleWEB.Pages.Login
     {
         #region Champs
         private readonly ILogRepository _logTools;
+        private readonly IAccountRepository _accountRepository;
 
         #endregion
 
         #region Constructeur
-        public SignUpModel(ILogRepository logTools)
+        public SignUpModel(ILogRepository logTools, IAccountRepository accountRepository)
         {
             _logTools = logTools;
+            _accountRepository = accountRepository;
         }
         #endregion
 
@@ -43,7 +48,12 @@ namespace VignobleWEB.Pages.Login
 
             try
             {
-               
+                HashPassword();
+
+                if (_accountRepository.CreateUser(user, customer))
+                {
+                    return RedirectToPage("/Index");
+                }
             }
             catch (Exception ex)
             {
@@ -57,7 +67,30 @@ namespace VignobleWEB.Pages.Login
 
         #region M�thodes priv�es
 
-        
+        private void HashPassword()
+        {
+            byte[] salt;
+            user.EncryptPassword = EncryptPassword(password, out salt);
+            user.PasswordSalt = salt;
+        }
+
+        private string EncryptPassword(string password, out byte[] salt)
+        {
+            salt = new byte[Constantes.SALT_LENGTH];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000, HashAlgorithmName.SHA256);
+            byte[] hash = pbkdf2.GetBytes(20);
+
+            byte[] hashBytes = new byte[36];
+            Array.Copy(salt, 0, hashBytes, 0, 16);
+            Array.Copy(hash, 0, hashBytes, 16, 20);
+
+            return Convert.ToBase64String(hashBytes);
+        }
 
         #endregion
 
@@ -69,10 +102,11 @@ namespace VignobleWEB.Pages.Login
         public Customer customer { get; set; } = new();
 
         [BindProperty]
-        public string Password { get; set; } = string.Empty;
+        public string password { get; set; } = string.Empty;
 
         [BindProperty]
         public string passwordVerified { get; set; } = string.Empty;
+
         #endregion
     }
 }

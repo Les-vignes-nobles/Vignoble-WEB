@@ -13,6 +13,6 @@ namespace VignobleWEB.Core.Interfaces.Application.Repositories
         /// Envoie la requête à l'API pour créer le compte
         /// </summary>
         /// <returns></returns>
-        Task<User> CreateUser();
+        bool CreateUser(User user, Customer customer);
     }
 }
