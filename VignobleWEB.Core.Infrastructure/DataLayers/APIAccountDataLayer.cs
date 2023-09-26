@@ -44,8 +44,7 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
                 var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
-                if (!response.IsSuccessStatusCode)
-                    throw new DataLayersException(response.StatusCode.ToString());
+                if (!response.IsSuccessStatusCode) { throw new DataLayersException(response.StatusCode.ToString()); }
 
                 var resp = await response.Content.ReadAsStringAsync();
 

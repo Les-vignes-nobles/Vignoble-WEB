@@ -33,7 +33,7 @@ namespace VignobleWEB.Core.Application.Repositories
             {
                 VerifDonneesCreationUser(user, customer);
 
-                _accountDataLayer.CreateUser(user, customer).Result;
+                _accountDataLayer.CreateUser(user, customer);
 
                 return true;
             }
