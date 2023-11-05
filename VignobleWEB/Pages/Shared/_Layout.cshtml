@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - VignobleWEB</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/basket.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/VignobleWEB.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -23,7 +24,9 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="Articles/Articles">Article</a>
                         </li>
                     </ul>
-                    <img class="litlesize" src="img/basket.png" /> 
+                    <a asp-area="" asp-page="/Basket">
+                        <img class="litlesize" src="img/basket.png" /> 
+                    </a>
                 </div>
                 <div class="conteneur">
                     <img class="litlesize Image" src="img/user.png" alt="Image" />

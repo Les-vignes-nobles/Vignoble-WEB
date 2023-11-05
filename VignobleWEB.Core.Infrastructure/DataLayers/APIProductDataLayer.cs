@@ -38,14 +38,14 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
-                HttpResponseMessage response = client.GetAsync($"{client.BaseAddress}/Product/GetAllProducts").Result;
+                HttpResponseMessage response = client.GetAsync($"{client.BaseAddress}/Product").Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     token = await _tokenAPI.GetTokenAPI();
                     client.DefaultRequestHeaders.Remove("Authorization");
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                    response = await client.GetAsync(url);
+                    response = await client.GetAsync($"{client.BaseAddress}/Product/GetAllProducts");
 
                     if (!response.IsSuccessStatusCode)
                         throw new DataLayersException(response.StatusCode.ToString());
