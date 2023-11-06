@@ -1,16 +1,5 @@
-using Microsoft.AspNetCore.Authentication.Negotiate;
 using VignobleWEB.Extensions;
-using VignobleWEB.Core.Application.Tools;
-using VignobleWEB.Core.Application.Repositories;
-using VignobleWEB.Core.Infrastructure.Tools;
-using VignobleWEB.Core.Infrastructure.DataLayers;
-using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
-using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
-using VignobleWEB.Core.Interfaces.Application.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
-using VignobleWEB.Core.Interfaces.Infrastructure.Token;
-using VignobleWEB.Core.Infrastructure.Token;
 
 var builder = WebApplication.CreateBuilder(args);
 //Ajout du système de log
@@ -21,8 +10,8 @@ builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddCustomServices();
 builder.Services.AddConfiguration(builder.Configuration);
+builder.Services.AddCustomServices();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
