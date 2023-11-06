@@ -14,7 +14,8 @@ namespace VignobleWEB.Pages
 
         public void OnGet()
         {
-
+            //Création d'une variable de session pour test
+            HttpContext.Session.SetString("panier", "0/1/3/5");
         }
     }
 }
