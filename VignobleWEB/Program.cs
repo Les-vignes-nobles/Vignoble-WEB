@@ -1,5 +1,5 @@
-using Serilog;
 using VignobleWEB.Extensions;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 //Ajout du système de log
@@ -10,8 +10,8 @@ builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddCustomServices();
 builder.Services.AddConfiguration(builder.Configuration);
+builder.Services.AddCustomServices();
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

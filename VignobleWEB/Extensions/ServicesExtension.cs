@@ -2,11 +2,12 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using VignobleWEB.Core.Application.Repositories;
 using VignobleWEB.Core.Application.Tools;
 using VignobleWEB.Core.Infrastructure.DataLayers;
-using VignobleWEB.Core.Infrastructure.Token;
+using VignobleWEB.Core.Infrastructure.Services;
 using VignobleWEB.Core.Infrastructure.Tools;
+using VignobleWEB.Core.Infrastructure.Utils;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
 using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
-using VignobleWEB.Core.Interfaces.Infrastructure.Token;
+using VignobleWEB.Core.Interfaces.Infrastructure.Services;
 using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
 
 namespace VignobleWEB.Extensions;
@@ -15,20 +16,20 @@ public static class ServicesExtension
 {
     public static void AddCustomServices(this IServiceCollection services)
     {
-        //Permet lors de l'utilisation d'une interface de table en base de données de le lier au DataLayer associé
-        services.TryAddScoped<IProductDataLayer, APIProductDataLayer>();
 
-        //Permet lors de l'utilisation d'une interface de repository de le lier à son repository associé
+        services.AddHttpClient();
+        services.TryAddTransient<CustomHttpHandler>();
+        services.AddHttpClient( "Auth")
+            .AddHttpMessageHandler<CustomHttpHandler>();
+
+
+        services.TryAddScoped<IAuthService, AuthService>();
+        services.TryAddScoped<IProductDataLayer, APIProductDataLayer>();
         services.TryAddScoped<IProductRepository, ProductRepository>();
 
-        //Ajout du scope sur les Tools Infrastructure
         services.TryAddScoped<ILogInfrastructure, LogInfrastructure>();
 
-        //Ajout du scope sur les Tools Repository
         services.TryAddScoped<ILogRepository, LogRepository>();
-
-        //Ajout du scope pour l'API
-        services.TryAddScoped<ITokenAPI, TokenAPI>();
 
     }
 }
