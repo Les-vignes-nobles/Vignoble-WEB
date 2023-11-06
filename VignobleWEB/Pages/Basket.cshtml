@@ -4,8 +4,9 @@
     ViewData["Title"] = "Panier";
 }
 <h1>@ViewData["Title"]</h1>
-
-<script src="~/js/basket.js" asp-append-version="true"></script>
+@section Scripts{
+    <script src="~/js/basket.js" asp-append-version="true"></script>
+}
 
 <section class="h-100 h-custom" style="background-color: #d2c9ff;">
     <div class="container py-5 h-100">

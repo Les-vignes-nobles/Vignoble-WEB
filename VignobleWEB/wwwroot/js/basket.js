@@ -28,7 +28,7 @@ function appelAPI(param1) {
 }
 
 
-document.getElementById("idTransport").addEventListener("change", function() {
+transportSelect.addEventListener("change", function() {
     transportChoisi = transportSelect.selectedIndex;
     valTransport = transportSelect.options[transportChoisi].value;
 
