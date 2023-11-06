@@ -149,20 +149,23 @@ namespace VignobleWEB.Pages
 
             string panier = HttpContext.Session.GetString("panier");
 
-            string[] listIds = panier.Split("/");
-
-            foreach(string id in listIds)
+            if (panier != null)
             {
-                foreach(Product product in listProductsTest)
+                string[] listIds = panier.Split("/");
+
+                foreach(string id in listIds)
                 {
-                    if (product.Id == Convert.ToInt32(id))
+                    foreach(Product product in listProductsTest)
                     {
-                        listProducts.Add(product);
-                        prixTotal += product.UnitPrice;
+                        if (product.Id == Convert.ToInt32(id))
+                        {
+                            listProducts.Add(product);
+                            prixTotal += product.UnitPrice;
+                        }
                     }
                 }
+                nbProduits = listProducts.Count;
             }
-            nbProduits = listProducts.Count;
         }
         #endregion
 
