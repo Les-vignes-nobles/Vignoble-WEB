@@ -1,12 +1,8 @@
 ﻿transportSelect = document.getElementById("idTransport");
 
-// URL de l'API
-const urlSiteApi = 'http://82.165.237.163:5000/api/transport/';
-
-
 function appelAPI(param1) {
     // URL de base de l'API
-    const apiUrl = 'https://exemple.com/api/endpoint';
+    const urlSiteApi = 'http://82.165.237.163:5000/api/product/';
 
     // Construire l'URL en incluant les paramètres
     const urlAvecParametres = `${apiUrl}${param1}`;
