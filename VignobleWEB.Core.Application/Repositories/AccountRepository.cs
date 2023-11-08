@@ -63,12 +63,12 @@ namespace VignobleWEB.Core.Application.Repositories
             if (user.BirthDay == null || user.BirthDay >= DateTime.Today) { throw new RepositoryException("La date n'est pas valide !"); }
             if (user.EncryptPassword == null) { throw new RepositoryException("Le mot de passe ne peut pas être nul !"); }
 
-            if (customer.Country == null || customer.Country == string.Empty) { throw new RepositoryException("Le pays ne peut pas être vide !"); }
+            //if (customer.Country == null || customer.Country == string.Empty) { throw new RepositoryException("Le pays ne peut pas être vide !"); }
             if (customer.Town == null || customer.Town == string.Empty) { throw new RepositoryException("La ville ne peut pas être nul !"); }
             if (customer.Address == null || customer.Address == string.Empty) { throw new RepositoryException("L'adresse ne doit pas être vide !"); }
             if (customer.CustomerName == null || customer.CustomerName == string.Empty) { throw new RepositoryException("Le prénom ne peut pas être vide !"); }
             if (customer.CustomerSurname == null || customer.CustomerSurname == string.Empty) { throw new RepositoryException("Le nom ne peut pas être vide !"); }
-            if (customer.Email == null || customer.Email == string.Empty) { throw new RepositoryException("L'adresse mail ne peut pas être vide !"); }
+            //if (customer.Email == null || customer.Email == string.Empty) { throw new RepositoryException("L'adresse mail ne peut pas être vide !"); }
             if (customer.PhoneNumber == null || customer.PhoneNumber.ToString().Length == 0) { throw new RepositoryException("Le nuémro de téléphone ne peut pas être vide !"); }
         }
         #endregion
