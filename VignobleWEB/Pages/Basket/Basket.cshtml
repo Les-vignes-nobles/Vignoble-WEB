@@ -4,6 +4,9 @@
 @{
     ViewData["Title"] = "Panier";
 }
+@section Scripts{
+    <script src="~/js/basket.js" asp-append-version="true"></script>
+}
 <h1>@ViewData["Title"]</h1>
 
 
@@ -89,8 +92,8 @@
                                     @* <div class="mb-4 pb-2"> *@
                                     @*     <select id="idTransport" class="form-control" asp-for="transport.Id" asp-items="@Model.listTransports"></select> *@
                                     @* </div> *@
-                                    @Html.DropDownList("Transport", Model.listTransports)
-                                   <select class="form-control" id="dropdown-transports" name="Transport.Id">
+                                    @*@Html.DropDownList("Transport", Model.listTransports)*@
+                                    <select class="form-control" id="idTransport" name="Transport.Id">
                                        <option value="">Choisissez une option de livraison</option>
                                        @foreach (var transport in Model.listTransports)
                                        {

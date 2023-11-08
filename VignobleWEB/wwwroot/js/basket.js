@@ -28,12 +28,6 @@ transportSelect.addEventListener("change", function() {
     transportChoisi = transportSelect.selectedIndex;
     valTransport = transportSelect.options[transportChoisi].value;
 
-    appelAPI(valTransport).then(data => {
-
-        console.log(data);
-    })
-    .catch(error => {
-        console.error(error);
-    });
+    console.log(document.getElementById("coucou").getAttribute('data-price'));
 
 });
