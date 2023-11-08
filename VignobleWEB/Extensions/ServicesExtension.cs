@@ -25,7 +25,9 @@ public static class ServicesExtension
 
         services.TryAddScoped<IAuthService, AuthService>();
         services.TryAddScoped<IProductDataLayer, APIProductDataLayer>();
+        services.TryAddScoped<ITransportDataLayer, APITransportDataLayer>();
         services.TryAddScoped<IProductRepository, ProductRepository>();
+        services.TryAddScoped<ITransportRepository, TransportRepository>();
 
         services.TryAddScoped<ILogInfrastructure, LogInfrastructure>();
 
