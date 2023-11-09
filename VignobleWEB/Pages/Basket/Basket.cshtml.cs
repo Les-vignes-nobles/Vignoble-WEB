@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using VignobleWEB.Core.Infrastructure.Token;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
 using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
 using VignobleWEB.Core.Models;
@@ -16,11 +17,12 @@ public class BasketModel : PageModel
 
     #region Propriétés
 
-    public Transport SelectedTransport { get; set; }
+    public int Id { get; set; } = 1;
     public List<Product> listProducts;
     public List<Transport> listTransports;
     public SelectList listSelectedTransports;
 
+    public string Token { get; } = TokenManager.Instance.GetToken();
     public int nbProduits;
     public double prixTotal;
 
@@ -49,7 +51,7 @@ public class BasketModel : PageModel
                 listTransports.Select(x => new SelectListItem
                 {
                     Text = x.Name,
-                    Value = x.Price.ToString()
+                    Value = x.Id.ToString()
                 }),
                 "Value", "Text");
 

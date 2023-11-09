@@ -1,13 +1,14 @@
 ﻿@page "/panier"
 @using System.Globalization
+@using VignobleWEB.Core.Models
 @model BasketModel
 @{
     ViewData["Title"] = "Panier";
 }
 <h1>@ViewData["Title"]</h1>
 
-<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
-<section class="h-100 h-custom">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<section>
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12">
@@ -43,7 +44,7 @@
                                                     </button>
 
                                                     <input id="form1" min="0" name="quantity" value="1" type="number"
-                                                           class="form-control form-control-sm" />
+                                                           class="form-control form-control-sm"/>
 
                                                     <button class="btn btn-link px-2"
                                                             onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
@@ -86,11 +87,11 @@
                                         <h5>Total : @Model.listProducts.Sum(x => x.UnitPrice) €</h5>
                                     </div>
                                     <h5 class="text-uppercase mb-3">Transports</h5>
-                                    @Html.DropDownList("SelectedTransport", Model.listSelectedTransports, "Choisissez une option de livraison", new { @class = "form-control", id="dropdown-transports" } )
+                                    @Html.DropDownList("Id", Model.listSelectedTransports, "Choisissez une option de livraison", new { @class = "form-control", id = "dropdown-transports" })
                                     <h5 class="text-uppercase mb-3">Code promo</h5>
                                     <div class="mb-5">
                                         <div class="form-outline">
-                                            <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
+                                            <input type="text" id="form3Examplea2" class="form-control form-control-lg"/>
                                             <label class="form-label" for="form3Examplea2">Entrez un code promo</label>
                                         </div>
                                     </div>
@@ -114,15 +115,38 @@
 </section>
 @{
     var productTotal = Model.listProducts.Sum(x => x.UnitPrice).ToString("0.00", CultureInfo.InvariantCulture);
+    var token = Model.Token;
 }
-<script>
-    const productTotal = parseFloat(@productTotal);
+<script type="text/javascript">
+$(document).ready(function() {
+    let productTotalJs = parseFloat('@productTotal');
+    let tokenJs = '@token';
+
     $('select#dropdown-transports').change(function (event) {
-    const cost = parseFloat($(this).val());
-      if (!isNaN(cost) && !isNaN(productTotal)) {
-        const total = cost + productTotal;
-        $('#total-price').text(total.toFixed(1) + ' €');
-        console.log(total);
-      }
+                let selectedOption = $(this).find(":selected");
+                let idTransport = parseInt(selectedOption.val());
+         $.ajax({
+                url: `http://82.165.237.163:5000/api/transport/${$(this).val()}`,
+                type: 'GET',
+                headers : {
+                  'Authorization':'Bearer ' + tokenJs
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function(transportData) {
+                        let transportPrice = parseFloat(transportData.price);
+
+                        if (!isNaN(transportPrice) && !isNaN(productTotalJs)) {
+                                const totalPrice = productTotalJs + transportPrice;
+                                $('#total-price').text(totalPrice.toFixed(2) + ' €');
+                            } else {
+                                console.error('One of the values is NaN', {productTotalJs, transportPrice});
+                            }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
     });
+});
 </script>
