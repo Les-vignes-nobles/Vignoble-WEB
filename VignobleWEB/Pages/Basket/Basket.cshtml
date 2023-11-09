@@ -1,16 +1,13 @@
 ﻿@page "/panier"
-@using VignobleWEB.Core.Infrastructure.Token
+@using System.Globalization
 @model BasketModel
 @{
     ViewData["Title"] = "Panier";
 }
-@section Scripts{
-    <script src="~/js/basket.js" asp-append-version="true"></script>
-}
 <h1>@ViewData["Title"]</h1>
 
-
-<section class="h-100 h-custom" style="background-color: #d2c9ff;">
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+<section class="h-100 h-custom">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12">
@@ -33,7 +30,7 @@
                                             <div class="row mb-4 d-flex justify-content-between align-items-center">
                                                 <div class="col-md-2 col-lg-2 col-xl-2">
                                                     <img src=@product.Image
-                                                     class="img-fluid rounded-3" alt=@product.Name>
+                                                         class="img-fluid rounded-3" alt=@product.Name>
                                                 </div>
                                                 <div class="col-md-3 col-lg-3 col-xl-3">
                                                     <h6 class="text-muted">@product.Name</h6>
@@ -41,15 +38,15 @@
                                                 </div>
                                                 <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                                     <button class="btn btn-link px-2"
-                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
                                                         <i class="fas fa-minus"></i>
                                                     </button>
 
                                                     <input id="form1" min="0" name="quantity" value="1" type="number"
-                                                       class="form-control form-control-sm" />
+                                                           class="form-control form-control-sm" />
 
                                                     <button class="btn btn-link px-2"
-                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
                                                         <i class="fas fa-plus"></i>
                                                     </button>
                                                 </div>
@@ -89,17 +86,7 @@
                                         <h5>Total : @Model.listProducts.Sum(x => x.UnitPrice) €</h5>
                                     </div>
                                     <h5 class="text-uppercase mb-3">Transports</h5>
-                                    @* <div class="mb-4 pb-2"> *@
-                                    @*     <select id="idTransport" class="form-control" asp-for="transport.Id" asp-items="@Model.listTransports"></select> *@
-                                    @* </div> *@
-                                    @*@Html.DropDownList("Transport", Model.listTransports)*@
-                                    <select class="form-control" id="idTransport" name="Transport.Id">
-                                       <option value="">Choisissez une option de livraison</option>
-                                       @foreach (var transport in Model.listTransports)
-                                       {
-                                           <option value="@transport.Id" data-price="@transport.Price">@transport.Name</option>
-                                       }
-                                   </select>
+                                    @Html.DropDownList("SelectedTransport", Model.listSelectedTransports, "Choisissez une option de livraison", new { @class = "form-control", id="dropdown-transports" } )
                                     <h5 class="text-uppercase mb-3">Code promo</h5>
                                     <div class="mb-5">
                                         <div class="form-outline">
@@ -110,7 +97,7 @@
                                     <hr class="my-4">
                                     <div class="d-flex justify-content-between mb-5">
                                         <h5 class="text-uppercase">Prix total</h5>
-                                        <h5 id="total-price">@Model.prixTotal €</h5>
+                                        <h5 id="total-price">@Model.listProducts.Sum(x => x.UnitPrice) €</h5>
                                     </div>
                                     <button type="button" class="btn btn-dark btn-block btn-lg"
                                             data-mdb-ripple-color="dark">
@@ -125,38 +112,17 @@
         </div>
     </div>
 </section>
-
-
-<script type="text/javascript">
- $(document).ready(function() {
-    $('#dropdown-transports').change(function() {
-      let selectedOption = $(this).find('option:selected');
-      let additionalPrice = parseFloat(selectedOption.data('price'));
-
-      if (!isNaN(additionalPrice)) {
-        let totalPrice = @Model.prixTotal + additionalPrice;
-        $('#total-price').text(totalPrice.toFixed(2) + ' €');
+@{
+    var productTotal = Model.listProducts.Sum(x => x.UnitPrice).ToString("0.00", CultureInfo.InvariantCulture);
+}
+<script>
+    const productTotal = parseFloat(@productTotal);
+    $('select#dropdown-transports').change(function (event) {
+    const cost = parseFloat($(this).val());
+      if (!isNaN(cost) && !isNaN(productTotal)) {
+        const total = cost + productTotal;
+        $('#total-price').text(total.toFixed(1) + ' €');
+        console.log(total);
       }
     });
-  });
-    //
-    // let accessToken = '@TokenManager.Instance.GetToken();';
-    //
-    // $.ajax({
-    //     url: '/api/transportation',
-    //     type: 'GET',
-    //     contentType: 'application/json',
-    //     data: JSON.stringify({
-    //         // Your data here
-    //     }),
-    //     headers: {
-    //         'Authorization': 'Bearer ' + accessToken
-    //     },
-    //     success: function(response) {
-    //         // Handle success
-    //     },
-    //     error: function(xhr, status, error) {
-    //         // Handle error
-    //     }
-    // });
 </script>
