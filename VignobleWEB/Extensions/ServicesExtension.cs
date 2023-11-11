@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using VignobleWEB.Core.Application.Repositories;
 using VignobleWEB.Core.Application.Tools;
@@ -32,6 +33,5 @@ public static class ServicesExtension
         services.TryAddScoped<ILogInfrastructure, LogInfrastructure>();
 
         services.TryAddScoped<ILogRepository, LogRepository>();
-
     }
 }

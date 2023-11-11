@@ -42,7 +42,4 @@ public class APITransportDataLayer : ITransportDataLayer
     #endregion
 
     #endregion
-
-    #region Méthodes privées
-    #endregion
 }

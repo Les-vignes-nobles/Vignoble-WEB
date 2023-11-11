@@ -11,6 +11,7 @@ namespace VignobleWEB.Core.Models
         public int Id { get; set; }
         public int Role { get; set; }
         public string Username { get; set; }
+        public DateTime BirthDay { get; set; }
         public String EncryptPassword { get; set; }
         public byte[] PasswordSalt { get; set; }
         public bool Activated { get; set; }

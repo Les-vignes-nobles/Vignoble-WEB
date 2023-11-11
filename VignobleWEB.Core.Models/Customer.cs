@@ -11,6 +11,7 @@ namespace VignobleWEB.Core.Models
         public int Id { get; set; }
         public string CustomerSurname { get; set; }
         public string CustomerName { get; set; }
+        public string Gender { get; set; }
         public int? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public string? Address { get; set; }
