@@ -5,7 +5,7 @@ namespace VignobleWEB.Core.Models
     public class Product
     {
         [JsonPropertyName("Id")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [JsonPropertyName("Reference")]
         public string Reference { get; set; }
         [JsonPropertyName("Name")]

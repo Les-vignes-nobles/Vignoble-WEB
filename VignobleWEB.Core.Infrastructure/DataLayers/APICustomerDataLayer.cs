@@ -56,7 +56,7 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #endregion
 
         #region Read (Lecture)
-        public async Task<Customer> GetAdress(int idUser)
+        public async Task<Customer> GetAddress(string idUser)
         {
             using var client = _httpClientFactory.CreateClient("Auth");
             client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");

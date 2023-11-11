@@ -56,7 +56,6 @@ public class BasketModel : PageModel
                 "Value", "Text");
 
             RecupListePanier();
-            RecupListeTransport();
         }
         catch (Exception ex)
         {
@@ -86,26 +85,6 @@ public class BasketModel : PageModel
 
     #region Méthodes privées
 
-    private void RecupListeTransport()
-    {
-        List<Carrier> listCarriers = new();
-
-        listCarriers.Add(new Carrier
-        {
-            Id = 1,
-            Name = "Colissimo",
-            Price = 6
-        });
-        listCarriers.Add(new Carrier
-        {
-            Id = 2,
-            Name = "Chronopost",
-            Price = 12
-        });
-
-
-    }
-
     private void RecupListePanier()
     {
         listProducts = _productRepository.GetAllActiveProducts().Result;
@@ -120,7 +99,7 @@ public class BasketModel : PageModel
         {
             foreach (var product in listProducts)
             {
-                if (product.Id == Convert.ToInt32(id))
+                if (product.Id.ToString() == id)
                 {
                     listProducts.Add(product);
                     prixTotal += product.UnitPrice;

@@ -24,7 +24,7 @@ namespace VignobleWEB.Core.Interfaces.Infrastructure.DataLayers
         /// </summary>
         /// <param name="idUser">id de l'utilisateur</param>
         /// <returns>L'adresse de l'utilisateur</returns>
-        Task<Customer> GetAdress(int idUser);
+        Task<Customer> GetAddress(string idUser);
         #endregion
 
         #region Update

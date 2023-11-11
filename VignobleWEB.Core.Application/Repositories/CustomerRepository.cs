@@ -41,11 +41,11 @@ namespace VignobleWEB.Core.Application.Repositories
         #endregion
 
         #region Read (Lecture)
-        public async Task<Customer> GetAdress(int idUser)
+        public async Task<Customer> GetAddress(string guidUser)
         {
             try
             {
-                return _dataLayer.GetAdress(idUser).Result;
+                return _dataLayer.GetAddress(guidUser).Result;
             }
             catch (DataLayersException ex)
             {
@@ -62,7 +62,7 @@ namespace VignobleWEB.Core.Application.Repositories
             if (customer == null) { throw new RepositoryException("L'adresse de livraison ne peut pas être vide !"); }
             //if (customer.User == null) { throw new RepositoryException("L'utilsateur ne peut pas être vide !"); }
 
-            if (customer.Id == 0) { throw new RepositoryException("L'ID ne peut pas être vide !"); }
+            if (customer.Id == Guid.Empty || customer.Id == null) { throw new RepositoryException("L'ID ne peut pas être vide !"); }
             if (customer.CustomerName == null || customer.CustomerName == string.Empty) { throw new RepositoryException("Le prénom ne peut pas être vide !"); }
             if (customer.CustomerSurname == null || customer.CustomerSurname == string.Empty) { throw new RepositoryException("Le nom ne peut pas être vide !"); }
             if (customer.Address == null || customer.Address == string.Empty) { throw new RepositoryException("L'adresse ne peut pas être vide !"); }

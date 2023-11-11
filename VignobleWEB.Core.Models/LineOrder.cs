@@ -2,7 +2,7 @@
 
 public class LineOrder
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public int Quantity { get; set; }
     public int QuantitySupplied { get; set; }
     public int HeaderOrderId { get; set; }

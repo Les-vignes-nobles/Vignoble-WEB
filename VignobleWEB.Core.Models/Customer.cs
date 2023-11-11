@@ -8,7 +8,7 @@ namespace VignobleWEB.Core.Models
 {
     public class Customer
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string CustomerSurname { get; set; }
         public string CustomerName { get; set; }
         public string Gender { get; set; }

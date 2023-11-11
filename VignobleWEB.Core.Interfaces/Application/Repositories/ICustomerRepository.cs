@@ -22,9 +22,9 @@ namespace VignobleWEB.Core.Interfaces.Application.Repositories
         /// <summary>
         /// Recupere l'adresse de l'utilisateur
         /// </summary>
-        /// <param name="idUser">id de l'utilisateur</param>
+        /// <param name="guidUser">id de l'utilisateur</param>
         /// <returns>L'adresse de l'utilisateur</returns>
-        Task<Customer> GetAdress(int idUser);
+        Task<Customer> GetAddress(string guidUser);
         #endregion
 
         #region Update

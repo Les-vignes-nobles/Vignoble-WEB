@@ -8,7 +8,7 @@ namespace VignobleWEB.Core.Models
 {
     public class Stock
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public int Quantity { get; set; }
         public int QuantitySaved { get; set; }
