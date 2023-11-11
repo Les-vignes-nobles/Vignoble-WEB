@@ -39,7 +39,7 @@ namespace VignobleWEB.Pages.Account.Manage.Adresses
         private async Task GetAdress(IdentityUser user) 
         {
             var id = await _userManager.GetUserIdAsync(user);
-            _customerRepository.GetAdress(Convert.ToInt32(id));
+            //_customerRepository.GetAdress(Convert.ToInt32(id));
         }
         #endregion
 

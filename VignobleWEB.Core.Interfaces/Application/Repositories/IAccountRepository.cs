@@ -1,0 +1,13 @@
+﻿using VignobleWEB.Core.Models;
+
+namespace VignobleWEB.Core.Interfaces.Application.Repositories
+{
+    public interface IAccountRepository
+    {
+        /// <summary>
+        /// Envoie la requête à l'API pour créer le compte
+        /// </summary>
+        /// <returns></returns>
+        bool CreateUser(User user, Customer customer);
+    }
+}

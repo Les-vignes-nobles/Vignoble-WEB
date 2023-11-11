@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
+using VignobleWEB.Core.Interfaces.Application.Repositories;
 using VignobleWEB.Core.Models;
 
 namespace VignobleWEB.Pages.Account
@@ -24,10 +25,11 @@ namespace VignobleWEB.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IAccountRepository _accountRepository;
         #endregion
 
         #region Constructeur
-        public RegisterModel(UserManager<IdentityUser> userManager, IUserStore<IdentityUser> userStore, SignInManager<IdentityUser> signInManager, ILogger<RegisterModel> logger, IEmailSender emailSender)
+        public RegisterModel(UserManager<IdentityUser> userManager, IUserStore<IdentityUser> userStore, SignInManager<IdentityUser> signInManager, ILogger<RegisterModel> logger, IEmailSender emailSender, IAccountRepository accountRepository)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -35,9 +37,11 @@ namespace VignobleWEB.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _accountRepository = accountRepository;
         }
         #endregion
 
+        #region Propriétés
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -70,8 +74,9 @@ namespace VignobleWEB.Pages.Account
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
         }
+        #endregion
 
-
+        #region Méthodes publiques
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
@@ -91,6 +96,8 @@ namespace VignobleWEB.Pages.Account
             if (result.Succeeded)
             {
                 _logger.LogInformation($"Le compte à bien été créé pour '{user.Email}' ");
+
+                CreateAdress();
 
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -123,6 +130,18 @@ namespace VignobleWEB.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+        #endregion
+
+        #region Méthodes privées
+        private void CreateAdress()
+        {
+            userAPI.Email = Input.Email;
+            userAPI.UserName = Input.Email;
+            userAPI.EncryptPassword = "132";
+            customer.PhoneNumber = Convert.ToInt32(Input.PhoneNumber); 
+            customer.Email = Input.Email;
+            _accountRepository.CreateUser(userAPI, customer);
+        }
 
         private IdentityUser CreateUser()
         {
@@ -146,14 +165,6 @@ namespace VignobleWEB.Pages.Account
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
-
-        private IUserPhoneNumberStore<IdentityUser> GetPhoneNumberStore()
-        {
-            if (!_userManager.SupportsUserPhoneNumber)
-            {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
-            }
-            return (IUserPhoneNumberStore<IdentityUser>)_userStore;
-        }
+        #endregion
     }
 }
