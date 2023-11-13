@@ -97,7 +97,7 @@ namespace VignobleWEB.Pages.Account
             {
                 _logger.LogInformation($"Le compte à bien été créé pour '{user.Email}' ");
 
-                CreateAdress();
+                CreateAdress(user);
 
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -105,7 +105,7 @@ namespace VignobleWEB.Pages.Account
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmail",
                     pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                    values: new { userId = userId, code = code, returnUrl = returnUrl },
                     protocol: Request.Scheme);
 
                 await _emailSender.SendEmailAsync(Input.Email, "Veuillez confirmer votre mail",
@@ -133,13 +133,19 @@ namespace VignobleWEB.Pages.Account
         #endregion
 
         #region Méthodes privées
-        private void CreateAdress()
+        private async void CreateAdress(IdentityUser user)
         {
-            userAPI.Email = Input.Email;
-            userAPI.UserName = Input.Email;
-            userAPI.EncryptPassword = "132";
-            customer.PhoneNumber = Convert.ToInt32(Input.PhoneNumber); 
-            customer.Email = Input.Email;
+
+            userAPI.Id = user.Id;
+            userAPI.Email = user.Email;
+            userAPI.UserName = user.Email;
+            userAPI.Password = Input.Password;
+
+            customer.User = userAPI;
+            customer.UserId = user.Id;
+            customer.PhoneNumber = Convert.ToInt32(user.PhoneNumber); 
+            customer.Email = user.Email;
+
             _accountRepository.CreateUser(userAPI, customer);
         }
 

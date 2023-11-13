@@ -30,14 +30,6 @@ namespace VignobleWEB.Pages.Account
         }
         #endregion
 
-        #region Propriétés
-        public string Email { get; set; }
-
-        public bool DisplayConfirmAccountLink { get; set; }
-
-        public string EmailConfirmationUrl { get; set; }
-        #endregion
-
         #region Méthodes publiques
         public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
         {
@@ -70,6 +62,14 @@ namespace VignobleWEB.Pages.Account
 
             return Page();
         }
+        #endregion
+
+        #region Propriétés
+        public string Email { get; set; }
+
+        public bool DisplayConfirmAccountLink { get; set; }
+
+        public string EmailConfirmationUrl { get; set; }
         #endregion
     }
 }

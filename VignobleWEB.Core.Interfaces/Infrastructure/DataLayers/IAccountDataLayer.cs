@@ -8,6 +8,13 @@ namespace VignobleWEB.Core.Interfaces.Infrastructure.DataLayers
         /// Envoie la requête à l'API pour créer le compte
         /// </summary>
         /// <returns></returns>
-        Task<bool> CreateUser(User user, Customer customer);
+        Task<bool> CreateUser(User user);
+
+        /// <summary>
+        /// Permet de supprimer un compte
+        /// </summary>
+        /// <param name="guidUser"></param>
+        /// <returns></returns>
+        Task<bool> DeleteUser(string guidUser);
     }
 }

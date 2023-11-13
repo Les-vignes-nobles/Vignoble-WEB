@@ -80,11 +80,11 @@ namespace VignobleWEB.Pages.Account
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("Compte utilisateur bloqué.");
-                    return RedirectToPage("./Lockout");
+                    return RedirectToPage("Account/Lockout");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Tentative de connexion invalide.");
+                    ModelState.AddModelError(string.Empty, "Mot de passe ou mail incorrect !");
                     return Page();
                 }
             }

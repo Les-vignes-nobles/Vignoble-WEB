@@ -6,7 +6,7 @@ using VignobleWEB.Core.Models;
 
 namespace VignobleWEB.Core.Application.Repositories
 {
-    public class AccountRepository : IAccountRepository
+    public class AccountRepository : IAccountRepository 
     {
         #region Champs
         private readonly IAccountDataLayer _accountDataLayer;
@@ -23,13 +23,21 @@ namespace VignobleWEB.Core.Application.Repositories
         #region Méthodes publiques
 
         #region Create (Ajout)
-        public bool CreateUser(User user, Customer customer)
+        public async Task<bool> CreateUser(User user, Customer customer)
         {
             try
             {
+                //Vérification des données
                 VerifDonneesCreationUser(user, customer);
 
-                _accountDataLayer.CreateUser(user, customer);
+                //Ajout du compte dans la BDD via l'api
+                var result = await _accountDataLayer.CreateUser(user);
+
+                if (result == true)
+                {
+                    //Ajout de l'adresse de livraison du client
+                    await _customerRepository.CreateCustomer(customer);
+                }
 
                 return true;
             }
@@ -48,6 +56,10 @@ namespace VignobleWEB.Core.Application.Repositories
         #endregion
 
         #region Delete (Suppression)
+        public async Task<bool> DeleteUser(string guidUser)
+        {
+            return await _accountDataLayer.DeleteUser(guidUser);
+        }
         #endregion
 
         #endregion
@@ -57,15 +69,16 @@ namespace VignobleWEB.Core.Application.Repositories
         {
             if (user.Email == null || user.Email == string.Empty) { throw new RepositoryException("L'adresse mail ne peut pas être vide !"); }
             if (user.BirthDay == null || user.BirthDay >= DateTime.Today) { throw new RepositoryException("La date n'est pas valide !"); }
-            if (user.EncryptPassword == null) { throw new RepositoryException("Le mot de passe ne peut pas être nul !"); }
+            if (user.Password == null || user.Password == string.Empty) { throw new RepositoryException("Le mot de passe ne peut pas être nul !"); }
 
-            //if (customer.Country == null || customer.Country == string.Empty) { throw new RepositoryException("Le pays ne peut pas être vide !"); }
+            if (customer.Country == null || customer.Country == string.Empty) { throw new RepositoryException("Le pays ne peut pas être vide !"); }
             if (customer.Town == null || customer.Town == string.Empty) { throw new RepositoryException("La ville ne peut pas être nul !"); }
             if (customer.Address == null || customer.Address == string.Empty) { throw new RepositoryException("L'adresse ne doit pas être vide !"); }
             if (customer.CustomerName == null || customer.CustomerName == string.Empty) { throw new RepositoryException("Le prénom ne peut pas être vide !"); }
             if (customer.CustomerSurname == null || customer.CustomerSurname == string.Empty) { throw new RepositoryException("Le nom ne peut pas être vide !"); }
-            //if (customer.Email == null || customer.Email == string.Empty) { throw new RepositoryException("L'adresse mail ne peut pas être vide !"); }
+            if (customer.Email == null || customer.Email == string.Empty) { throw new RepositoryException("L'adresse mail ne peut pas être vide !"); }
             if (customer.PhoneNumber == null || customer.PhoneNumber.ToString().Length == 0) { throw new RepositoryException("Le nuémro de téléphone ne peut pas être vide !"); }
+            if (customer.User == null) { throw new RepositoryException("L'utilisateur doit être défini !"); }
         }
         #endregion
     }

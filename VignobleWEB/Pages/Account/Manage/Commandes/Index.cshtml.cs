@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
@@ -9,32 +10,43 @@ namespace VignobleWEB.Pages.Account.Manage.Commandes
     {
         #region Champs
         private readonly IHeaderOrderRepository _headerOrderRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly UserManager<IdentityUser> _userManager;
         #endregion
 
         #region Constructeur
-        public IndexModel(IHeaderOrderRepository headerOrderRepository)
+        public IndexModel(IHeaderOrderRepository headerOrderRepository, ICustomerRepository customerRepository, UserManager<IdentityUser> userManager)
         {
             _headerOrderRepository = headerOrderRepository;
+            _customerRepository = customerRepository;
+            _userManager = userManager;
         }
         #endregion
 
         #region Méthodes publiques
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
             IActionResult result = Page();
 
-            RecupListeCommande();
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Impossible de charger l'utilisateur avec l'ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            await RecupListeCommande(user);
 
             return result;
         }
         #endregion
 
         #region Méthodes privées
-        private void RecupListeCommande()
+        private async Task RecupListeCommande(IdentityUser identityUser)
         {
-            Guid id;
+            Customer customer = _customerRepository.GetAddress(identityUser.Id).Result; 
 
-            ListeEnteteCommande = _headerOrderRepository.RecupererListeEnteteCommandeDunClient(id).Result;
+            ListeEnteteCommande = _headerOrderRepository.RecupererListeEnteteCommandeDunClient(customer.Id).Result;
+            
         }
         #endregion
 

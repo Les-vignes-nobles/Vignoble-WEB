@@ -43,7 +43,7 @@
             <div class="form-group">
                 <label asp-for="userAPI.BirthDay" class="col-sm-3 control-label">Anniversaire*</label>
                 <div class="col-sm-9">
-                    <input type="date" asp-for="userAPI.BirthDay" value="@DateTime.Now.ToString()" id="BirthDay" class="form-control" required>
+                    <input id="BirthDay" class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.ToString("yyyy-MM-dd")" asp-for="userAPI.BirthDay" required>
                     <span asp-validation-for="userAPI.BirthDay" class="text-danger"></span>
                 </div>
             </div>
@@ -70,10 +70,17 @@
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="customer.ZipCode" class="col-sm-3 control-label">code postal* </label>
+                <label asp-for="customer.ZipCode" class="col-sm-3 control-label">Code postal* </label>
                 <div class="col-sm-9">
                     <input type="text" asp-for="customer.ZipCode" id="ZipCode" placeholder="code postal" class="form-control" required>
                        <span asp-validation-for="customer.ZipCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="customer.Country" class="col-sm-3 control-label">Pays* </label>
+                <div class="col-sm-9">
+                    <input type="text" asp-for="customer.Country" id="Pays" placeholder="Pays" class="form-control" required>
+                    <span asp-validation-for="customer.Country" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">

@@ -26,7 +26,7 @@ namespace VignobleWEB.Core.Models
         public bool OrderAuto { get; set; }
 
         [JsonPropertyName("SupplierId")]
-        public int SupplierId { get; set; }
+        public Guid SupplierId { get; set; }
         [JsonPropertyName("Supplier")]
         public Supplier Supplier { get; set; }
 
@@ -34,7 +34,7 @@ namespace VignobleWEB.Core.Models
         public ICollection<LineOrder>? LineOrders { get; set; }
 
         [JsonPropertyName("StockId")]
-        public int StockId { get; set; }
+        public Guid StockId { get; set; }
         [JsonPropertyName("Stock")]
         public Stock Stock { get; set; }
 

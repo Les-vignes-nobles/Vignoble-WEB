@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using VignobleWEB.Core.Interfaces.Application.Repositories;
 
 namespace VignobleWEB.Pages.Account.Manage
 {
@@ -11,14 +12,16 @@ namespace VignobleWEB.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
+        private readonly IAccountRepository _accountRepository;
         #endregion
 
         #region Constructeur
-        public DeletePersonalDataModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<DeletePersonalDataModel> logger)
+        public DeletePersonalDataModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<DeletePersonalDataModel> logger, IAccountRepository accountRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _accountRepository = accountRepository;
         }
         #endregion
 
@@ -69,6 +72,7 @@ namespace VignobleWEB.Pages.Account.Manage
 
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
+            await _accountRepository.DeleteUser(userId);
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Une erreur inattendue s'est produite lors de la suppression de l'utilisateur.");
