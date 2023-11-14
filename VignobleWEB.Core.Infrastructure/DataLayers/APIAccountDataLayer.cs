@@ -38,7 +38,7 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
 
             using var client = _httpClientFactory.CreateClient("Auth");
             client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/problem+json"));
 
             var url = $"{client.BaseAddress}user";
             var req = await client.PostAsync(url, new StringContent(jsonObject));
