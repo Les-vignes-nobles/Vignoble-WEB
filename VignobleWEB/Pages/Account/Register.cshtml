@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="userAPI.BirthDay" class="col-sm-3 control-label">Anniversaire*</label>
+                <label asp-for="userAPI.BirthDay" class="col-sm-3 control-label">Date de naissance*</label>
                 <div class="col-sm-9">
                     <input id="BirthDay" class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.ToString("yyyy-MM-dd")" asp-for="userAPI.BirthDay" required>
                     <span asp-validation-for="userAPI.BirthDay" class="text-danger"></span>

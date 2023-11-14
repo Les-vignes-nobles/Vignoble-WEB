@@ -33,12 +33,11 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
                 "\"email\":\"{2}\", " +
                 "\"birthDay\":\"{3}\", " +
                 "\"password\":\"{4}\", " +
-                "\"role\":\"{5}\", " +
-                    "}}", user.Id, user.Email, user.Email, user.BirthDay, user.Password, user.Role);
+                "\"role\":\"{5}\"}}", user.Id, user.Email, user.Email, user.BirthDay, user.Password, user.Role);
 
             using var client = _httpClientFactory.CreateClient("Auth");
             client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/problem+json"));
+            client.DefaultRequestHeaders.Add("content-type", "application/json");
 
             var url = $"{client.BaseAddress}user";
             var req = await client.PostAsync(url, new StringContent(jsonObject));
