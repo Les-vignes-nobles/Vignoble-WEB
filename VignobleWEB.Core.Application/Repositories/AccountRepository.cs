@@ -14,9 +14,10 @@ namespace VignobleWEB.Core.Application.Repositories
         #endregion
 
         #region Constructeur
-        public AccountRepository(IAccountDataLayer accountDataLayer)
+        public AccountRepository(IAccountDataLayer accountDataLayer, ICustomerRepository customerDataLayer)
         {
             _accountDataLayer = accountDataLayer;
+            _customerRepository = customerDataLayer;
         }
         #endregion
 
@@ -36,7 +37,7 @@ namespace VignobleWEB.Core.Application.Repositories
                 if (result == true)
                 {
                     //Ajout de l'adresse de livraison du client
-                    await _customerRepository.CreateCustomer(customer);
+                    var test = await _customerRepository.CreateCustomer(customer);
                 }
 
                 return true;

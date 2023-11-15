@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using VignobleWEB.Core.Infrastructure.ExceptionPersonnalisee;
 using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
+using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
 using VignobleWEB.Core.Models;
 
 namespace VignobleWEB.Core.Infrastructure.DataLayers
@@ -17,13 +19,15 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #region Champs
         private readonly IOptions<ApiSettings> _config;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogInfrastructure _logInfrastructure;
         #endregion
 
         #region Constructeur
-        public APICustomerDataLayer(IOptions<ApiSettings> config, IHttpClientFactory httpClientFactory)
+        public APICustomerDataLayer(IOptions<ApiSettings> config, IHttpClientFactory httpClientFactory, ILogInfrastructure logInfrastructure)
         {
             _config = config;
             _httpClientFactory = httpClientFactory;
+            _logInfrastructure = logInfrastructure;
         }
         #endregion
 
@@ -32,25 +36,43 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #region Create
         public async Task<bool> CreateCustomer(Customer customer)
         {
-            string jsonObject = string.Format("{{\"customerSurname\":\"{0}\", " +
-                    "\"customerName\":\"{1}\", " +
-                    "\"phoneNumber\":\"{2}\", " +
-                    "\"email\":\"{3}\", " +
-                    "\"address\":\"{4}\", " +
-                    "\"zipCode\":\"{5}\", " +
-                    "\"town\":\"{6}\", " +
-                    "\"country\":\"{7}\", " +
-                     "}}", customer.CustomerSurname, customer.CustomerName, customer.PhoneNumber, customer.Email, customer.Address, customer.ZipCode, customer.Town, customer.Country);
+            Customer customerAdd = new Customer
+            {
+                CustomerSurname = customer.CustomerSurname,
+                CustomerName = customer.CustomerName,
+                PhoneNumber = customer.PhoneNumber,
+                Email = customer.Email,
+                Address = customer.Address,
+                ZipCode = customer.ZipCode,
+                Town = customer.Town,
+                Country = customer.Country
+            };
 
-            using var client = _httpClientFactory.CreateClient("Auth");
-            client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(customerAdd), Encoding.UTF8, "application/json");
 
-            var url = $"{client.BaseAddress}customer/";
-            var req = await client.PostAsync(url, new StringContent(jsonObject));
-            if (!req.IsSuccessStatusCode)
-                throw new DataLayersException(req.StatusCode.ToString());
+            using (HttpClient client = _httpClientFactory.CreateClient("Auth"))
+            {
+                try
+                {
+                    client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
+                    var url = $"{client.BaseAddress}customer";
+                    HttpResponseMessage response = await client.PostAsync(url, content);
 
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                    }
+                    else
+                    {
+                        _logInfrastructure.LogInfo($"Erreur lors de la requête POST. Code d'erreur : {response.StatusCode}");
+                        Console.WriteLine(await response.Content.ReadAsStringAsync());
+                    }
+                }
+                catch (DataLayersException ex)
+                {
+                    throw;
+                }
+            }
             return true;
         }
         #endregion
@@ -61,7 +83,7 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
             using var client = _httpClientFactory.CreateClient("Auth");
             client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var url = $"{client.BaseAddress}customer/{idUser}";
+            var url = $"{client.BaseAddress}customer/getByNameOrEmail/{idUser}";
             var req = await client.GetAsync(url);
             if (!req.IsSuccessStatusCode)
                 throw new DataLayersException(req.StatusCode.ToString());

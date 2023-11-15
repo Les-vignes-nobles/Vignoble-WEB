@@ -1,8 +1,11 @@
 ﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using VignobleWEB.Core.Infrastructure.ExceptionPersonnalisee;
 using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
+using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
 using VignobleWEB.Core.Models;
 
 namespace VignobleWEB.Core.Infrastructure.DataLayers
@@ -12,13 +15,15 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #region Champs
         private readonly IOptions<ApiSettings> _config;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogInfrastructure _logInfrastructure;
         #endregion
 
         #region Constructeur
-        public APIAccountDataLayer(IOptions<ApiSettings> config, IHttpClientFactory httpClientFactory)
+        public APIAccountDataLayer(IOptions<ApiSettings> config, IHttpClientFactory httpClientFactory, ILogInfrastructure logInfo)
         {
             _config = config;
             _httpClientFactory = httpClientFactory;
+            _logInfrastructure = logInfo;
         }
         #endregion
 
@@ -35,14 +40,43 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
                 "\"password\":\"{4}\", " +
                 "\"role\":\"{5}\"}}", user.Id, user.Email, user.Email, user.BirthDay, user.Password, user.Role);
 
-            using var client = _httpClientFactory.CreateClient("Auth");
-            client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
-            client.DefaultRequestHeaders.Add("content-type", "application/json");
+            //using var client = _httpClientFactory.CreateClient("Auth");
+            //client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
+            ////client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var url = $"{client.BaseAddress}user";
-            var req = await client.PostAsync(url, new StringContent(jsonObject));
-            if (!req.IsSuccessStatusCode)
-                throw new DataLayersException(req.StatusCode.ToString());
+            //var url = $"{client.BaseAddress}user";
+            //var req = await client.PostAsync(url, new StringContent(jsonObject));
+            //if (!req.IsSuccessStatusCode)
+            //    throw new DataLayersException(req.StatusCode.ToString());
+
+            HttpContent content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
+
+            using (HttpClient client = _httpClientFactory.CreateClient("Auth"))
+            {
+                try
+                {
+                    client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
+                    var url = $"{client.BaseAddress}user";
+                    HttpResponseMessage response = await client.PostAsync(url, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                    }
+                    else
+                    {
+                        _logInfrastructure.LogInfo($"Erreur lors de la requête POST. Code d'erreur : {response.StatusCode}");
+                        Console.WriteLine(await response.Content.ReadAsStringAsync());
+                    }
+
+
+                }
+                catch (DataLayersException ex)
+                {
+
+                    throw;
+                }
+            }
             
             return true;
         }

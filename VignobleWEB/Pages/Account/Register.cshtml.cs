@@ -1,9 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
-
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -61,17 +56,17 @@ namespace VignobleWEB.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "La mot de passe doit comporter au moins {2} et au maximum {1} caractères.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Mot de passe")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = "Confirmer le mot de passe")]
             [Compare("Password", ErrorMessage = "Le mot de passe et le mot de passe de confirmation ne correspondent pas.")]
             public string ConfirmPassword { get; set; }
 
             [Required]
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Numéro de téléphone")]
             public string PhoneNumber { get; set; }
         }
         #endregion
@@ -113,7 +108,7 @@ namespace VignobleWEB.Pages.Account
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                 {
-                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    return RedirectToPage("/Account/RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                 }
                 else
                 {
@@ -143,7 +138,7 @@ namespace VignobleWEB.Pages.Account
 
             customer.User = userAPI;
             customer.UserId = user.Id;
-            customer.PhoneNumber = Convert.ToInt32(user.PhoneNumber); 
+            customer.PhoneNumber = user.PhoneNumber; 
             customer.Email = user.Email;
 
             _accountRepository.CreateUser(userAPI, customer);
