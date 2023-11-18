@@ -1,5 +1,13 @@
 ﻿@page "/Register"
 @model VignobleWEB.Pages.Account.RegisterModel
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/gestionMessageModal.js" asp-append-version="true"></script>
+}
+@if (Model.MessagePourLaModal != null && Model.MessagePourLaModal.Message != string.Empty)
+{
+    Html.RenderPartial("./VuePartielle/Message", Model.MessagePourLaModal);
+}
 
     <form id"registerForm" class="form-control" role="form" method="post">
         <div class="container">
@@ -111,6 +119,3 @@
         </div> <!-- ./container -->
     </form> <!-- /form -->
 
-@section Scripts {
-            <partial name="_ValidationScriptsPartial" />
-}

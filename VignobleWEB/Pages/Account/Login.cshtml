@@ -1,5 +1,13 @@
 ﻿@page "/Login"
 @model VignobleWEB.Pages.Account.LoginModel
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/gestionMessageModal.js" asp-append-version="true"></script>
+}
+@if (Model.MessagePourLaModal != null && Model.MessagePourLaModal.Message != string.Empty)
+{
+    Html.RenderPartial("./VuePartielle/Message", Model.MessagePourLaModal);
+}
 
 <div class="row">
     <div class="col-md-4">
@@ -42,7 +50,3 @@
         </section>
     </div>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

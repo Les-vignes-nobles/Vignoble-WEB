@@ -40,6 +40,7 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
             {
                 CustomerSurname = customer.CustomerSurname,
                 CustomerName = customer.CustomerName,
+                Gender = customer.Gender,  
                 PhoneNumber = customer.PhoneNumber,
                 Email = customer.Email,
                 Address = customer.Address,

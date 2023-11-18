@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Adresses";
     ViewData["ActivePage"] = ManageNavPages.Adresse;
+
+    @section Scripts{
+        <script src="~/js/gestionMessageModal.js" asp-append-version="true"></script>
+    }
 }
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />

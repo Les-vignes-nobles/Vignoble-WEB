@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using VignobleWEB.Core.Application.RepositoriesException;
+using VignobleWEB.Core.Application.Tools;
 using VignobleWEB.Core.Infrastructure.Token;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
 using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
@@ -10,38 +12,28 @@ namespace VignobleWEB.Pages.Basket;
 
 public class BasketModel : PageModel
 {
-
-    private readonly ILogRepository _logTools;
+    #region Champs
+    private readonly ILogRepository _logRepository;
     private readonly IProductRepository _productRepository;
     private readonly ITransportRepository _transportRepository;
-
-    #region Propriétés
-
-    public int Id { get; set; } = 1;
-    public List<Product> listProducts;
-    public List<Transport> listTransports;
-    public SelectList listSelectedTransports;
-
-    public string Token { get; } = TokenManager.Instance.GetToken();
-    public int nbProduits;
-    public double prixTotal;
-
     #endregion
 
-
-    public BasketModel(ILogRepository logTools, IProductRepository productRepository,
+    #region Constructeur
+    public BasketModel(ILogRepository logRepository, IProductRepository productRepository,
         ITransportRepository transportRepository)
     {
-        _logTools = logTools;
+        _logRepository = logRepository;
         _productRepository = productRepository;
         _transportRepository = transportRepository;
     }
+    #endregion
 
     #region M�thodes publique
 
     public async Task<IActionResult> OnGet()
     {
         IActionResult result = Page();
+
         try
         {
             listProducts = await _productRepository.GetAllActiveProducts();
@@ -57,9 +49,14 @@ public class BasketModel : PageModel
 
             RecupListePanier();
         }
+        catch (RepositoryException ex)
+        {
+            _logRepository.LogAvertissement(ex.Message);
+        }
         catch (Exception ex)
         {
-            _logTools.LogErreur("Une erreur s'est produite lors du GET sur la page panier !", ex);
+            MessagePourLaModal.Message = "Une erreur imprévue s'est produite, si le problème perciste contacter le service informatique";
+            _logRepository.LogErreur("Une erreut imprévu s'est produite !", ex);
         }
 
         return result;
@@ -73,9 +70,14 @@ public class BasketModel : PageModel
         {
 
         }
+        catch (RepositoryException ex)
+        {
+            _logRepository.LogAvertissement(ex.Message);
+        }
         catch (Exception ex)
         {
-            _logTools.LogErreur("Une erreur s'est produite lors du POST sur la page panier !", ex);
+            MessagePourLaModal.Message = "Une erreur imprévue s'est produite, si le problème perciste contacter le service informatique";
+            _logRepository.LogErreur("Une erreut imprévu s'est produite !", ex);
         }
 
         return result;
@@ -84,7 +86,6 @@ public class BasketModel : PageModel
     #endregion
 
     #region Méthodes privées
-
     private void RecupListePanier()
     {
         listProducts = _productRepository.GetAllActiveProducts().Result;
@@ -109,8 +110,19 @@ public class BasketModel : PageModel
 
         nbProduits = listProducts.Count;
     }
-
     #endregion
 
+    #region Propriétés
 
+    public Core.Models.Interne.MessageModal MessagePourLaModal { get; set; } = new() { Titre = "Une erreur s'est produite" };
+    public int Id { get; set; } = 1;
+    public List<Product> listProducts;
+    public List<Transport> listTransports;
+    public SelectList listSelectedTransports;
+
+    public string Token { get; } = TokenManager.Instance.GetToken();
+    public int nbProduits;
+    public double prixTotal;
+
+    #endregion
 }

@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Serilog;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
+using VignobleWEB.Core.Application.RepositoriesException;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
+using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
 using VignobleWEB.Core.Models;
 
 namespace VignobleWEB.Pages.Account
@@ -21,10 +24,11 @@ namespace VignobleWEB.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IAccountRepository _accountRepository;
+        private readonly ILogRepository _logRepository;
         #endregion
 
         #region Constructeur
-        public RegisterModel(UserManager<IdentityUser> userManager, IUserStore<IdentityUser> userStore, SignInManager<IdentityUser> signInManager, ILogger<RegisterModel> logger, IEmailSender emailSender, IAccountRepository accountRepository)
+        public RegisterModel(UserManager<IdentityUser> userManager, IUserStore<IdentityUser> userStore, SignInManager<IdentityUser> signInManager, ILogger<RegisterModel> logger, IEmailSender emailSender, IAccountRepository accountRepository, ILogRepository logRepository)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -33,97 +37,91 @@ namespace VignobleWEB.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _accountRepository = accountRepository;
-        }
-        #endregion
-
-        #region Propriétés
-        [BindProperty]
-        public InputModel Input { get; set; }
-
-        [BindProperty] public User userAPI { get; set; } = new User();
-
-        [BindProperty] public Customer customer { get; set; } = new Customer();
-
-        public string ReturnUrl { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
-            public string Email { get; set; }
-
-            [Required]
-            [StringLength(100, ErrorMessage = "La mot de passe doit comporter au moins {2} et au maximum {1} caractères.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Mot de passe")]
-            public string Password { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirmer le mot de passe")]
-            [Compare("Password", ErrorMessage = "Le mot de passe et le mot de passe de confirmation ne correspondent pas.")]
-            public string ConfirmPassword { get; set; }
-
-            [Required]
-            [Phone]
-            [Display(Name = "Numéro de téléphone")]
-            public string PhoneNumber { get; set; }
+            _logRepository = logRepository;
         }
         #endregion
 
         #region Méthodes publiques
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
-            ReturnUrl = returnUrl;
+            IActionResult result = this.Page();
+
+            try
+            {
+            }
+            catch (RepositoryException ex)
+            {
+                _logRepository.LogAvertissement(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                MessagePourLaModal.Message = "Une erreur imprévue s'est produite, si le problème perciste contacter le service informatique";
+                _logRepository.LogErreur("Une erreut imprévu s'est produite !", ex);
+            }
+
+            return result;
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("/Index");
+            IActionResult result = this.Page();
 
-            var user = CreateUser();
-
-            await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-            await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-            await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-            var result = await _userManager.CreateAsync(user, Input.Password);
-
-            if (result.Succeeded)
+            try
             {
-                _logger.LogInformation($"Le compte à bien été créé pour '{user.Email}' ");
+                returnUrl ??= Url.Content("/Index");
 
-                CreateAdress(user);
+                var user = CreateUser();
 
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { userId = userId, code = code, returnUrl = returnUrl },
-                    protocol: Request.Scheme);
+                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                var resultUser = await _userManager.CreateAsync(user, Input.Password);
 
-                await _emailSender.SendEmailAsync(Input.Email, "Veuillez confirmer votre mail",
-                    $"Veuillez confirmer votre compte en <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliquant ici</a>.");
-
-                if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                if (resultUser.Succeeded)
                 {
-                    return RedirectToPage("/Account/RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    _logger.LogInformation($"Le compte à bien été créé pour '{user.Email}' ");
+
+                    CreateAdress(user);
+
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { userId = userId, code = code, returnUrl = returnUrl },
+                        protocol: Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Veuillez confirmer votre mail",
+                        $"Veuillez confirmer votre compte en <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliquant ici</a>.");
+
+                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    {
+                        return RedirectToPage("/Account/RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    }
+                    else
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
+                    }
                 }
-                else
+
+                foreach (var error in resultUser.Errors)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
-            foreach (var error in result.Errors)
+            catch (RepositoryException ex)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                _logRepository.LogAvertissement(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessagePourLaModal.Message = "Une erreur imprévue s'est produite, si le problème perciste contacter le service informatique";
+                _logRepository.LogErreur("Une erreut imprévu s'est produite !", ex);
             }
 
-            // If we got this far, something failed, redisplay form
-            return Page();
+            return result;
         }
         #endregion
 
@@ -165,6 +163,41 @@ namespace VignobleWEB.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
+        }
+        #endregion
+
+        #region Propriétés
+        [BindProperty]
+        public InputModel Input { get; set; }
+
+        [BindProperty] public User userAPI { get; set; } = new User();
+
+        [BindProperty] public Customer customer { get; set; } = new Customer();
+
+        public Core.Models.Interne.MessageModal MessagePourLaModal { get; set; } = new() { Titre = "Une erreur s'est produite" };
+
+        public class InputModel
+        {
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "La mot de passe doit comporter au moins {2} et au maximum {1} caractères.", MinimumLength = 6)]
+            [DataType(DataType.Password)]
+            [Display(Name = "Mot de passe")]
+            public string Password { get; set; }
+
+            [DataType(DataType.Password)]
+            [Display(Name = "Confirmer le mot de passe")]
+            [Compare("Password", ErrorMessage = "Le mot de passe et le mot de passe de confirmation ne correspondent pas.")]
+            public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Phone]
+            [Display(Name = "Numéro de téléphone")]
+            public string PhoneNumber { get; set; }
         }
         #endregion
     }
