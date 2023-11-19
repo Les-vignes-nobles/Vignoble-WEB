@@ -4,6 +4,14 @@
     ViewData["Title"] = "Commandes";
     ViewData["ActivePage"] = ManageNavPages.Commande;
 }
+@section Scripts {
+        <script src="~/js/gestionMessageModal.js" asp-append-version="true"></script>
+        <partial name="_ValidationScriptsPartial" />
+}
+@if (Model.MessagePourLaModal != null && Model.MessagePourLaModal.Message != string.Empty)
+{
+    Html.RenderPartial("./VuePartielle/Message", Model.MessagePourLaModal);
+}
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
@@ -59,7 +67,3 @@
         </form>
     </div>
 </div>
-
-@section Scripts {
-            <partial name="_ValidationScriptsPartial" />
-}

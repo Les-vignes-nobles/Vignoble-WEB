@@ -6,6 +6,7 @@
 
     @section Scripts{
         <script src="~/js/gestionMessageModal.js" asp-append-version="true"></script>
+        <partial name="_ValidationScriptsPartial" />
     }
 }
 <h3>@ViewData["Title"]</h3>
@@ -62,7 +63,3 @@
         </form>
     </div>
 </div>
-
-@section Scripts {
-        <partial name="_ValidationScriptsPartial" />
-}
