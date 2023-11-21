@@ -56,8 +56,8 @@ namespace VignobleWEB.Pages.Account.Manage.Adresses
         #region Méthodes privées
         private async Task GetAdress(IdentityUser user) 
         {
-            var id = await _userManager.GetEmailAsync(user);
-            Customer = _customerRepository.GetAddress(id).Result;
+            var mail = await _userManager.GetEmailAsync(user);
+            Customer = _customerRepository.GetAddress(mail).Result;
         }
         #endregion
 

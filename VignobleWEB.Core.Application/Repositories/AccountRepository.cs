@@ -32,13 +32,7 @@ namespace VignobleWEB.Core.Application.Repositories
                 VerifDonneesCreationUser(user, customer);
 
                 //Ajout du compte dans la BDD via l'api
-                var result = await _accountDataLayer.CreateUser(user);
-
-                if (result == true)
-                {
-                    //Ajout de l'adresse de livraison du client
-                    var test = await _customerRepository.CreateCustomer(customer);
-                }
+                await _accountDataLayer.CreateUser(user, customer);
 
                 return true;
             }

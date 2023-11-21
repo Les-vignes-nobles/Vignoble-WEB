@@ -22,9 +22,9 @@ namespace VignobleWEB.Core.Interfaces.Infrastructure.DataLayers
         /// <summary>
         /// Recupere l'adresse de l'utilisateur
         /// </summary>
-        /// <param name="idUser">id de l'utilisateur</param>
+        /// <param name="mailuser">mail de l'utilisateur</param>
         /// <returns>L'adresse de l'utilisateur</returns>
-        Task<Customer> GetAddress(string idUser);
+        Task<Customer> GetAddress(string mailuser);
         #endregion
 
         #region Update

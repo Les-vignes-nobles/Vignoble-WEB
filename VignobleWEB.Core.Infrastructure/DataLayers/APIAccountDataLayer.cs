@@ -30,7 +30,7 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #region Méthodes publiques
 
         #region Create (Ajout)
-        public async Task<bool> CreateUser(User user)
+        public async Task<bool> CreateUser(User user, Customer customer)
         {
             
             string jsonObject = string.Format("{{\"id\":\"{0}\", " +
@@ -38,16 +38,18 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
                 "\"email\":\"{2}\", " +
                 "\"birthDay\":\"{3}\", " +
                 "\"password\":\"{4}\", " +
-                "\"role\":\"{5}\"}}", user.Id, user.Email, user.Email, user.BirthDay, user.Password, user.Role);
-
-            //using var client = _httpClientFactory.CreateClient("Auth");
-            //client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
-            ////client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            //var url = $"{client.BaseAddress}user";
-            //var req = await client.PostAsync(url, new StringContent(jsonObject));
-            //if (!req.IsSuccessStatusCode)
-            //    throw new DataLayersException(req.StatusCode.ToString());
+                "\"role\":\"{5}\"," +
+                "\"surname\":\"{6}\", " +
+                "\"name\":\"{7}\", " +
+                "\"gender\":\"{8}\", " +
+                "\"phoneNumber\":\"{9}\", " +
+                "\"address\":\"{10}\", " +
+                "\"zipCode\":\"{11}\", " +
+                "\"town\":\"{12}\", " +
+                "\"country\":\"{13}\" " +
+                "}}", user.Id, user.Email, user.Email, user.BirthDay, user.Password, user.Role, 
+                customer.CustomerSurname, customer.CustomerName, customer.Gender, customer.PhoneNumber,
+                customer.Address, customer.ZipCode, customer.Town, customer.Country);
 
             HttpContent content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
 

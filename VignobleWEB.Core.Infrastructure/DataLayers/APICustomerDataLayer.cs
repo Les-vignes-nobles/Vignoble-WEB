@@ -79,12 +79,12 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #endregion
 
         #region Read (Lecture)
-        public async Task<Customer> GetAddress(string idUser)
+        public async Task<Customer> GetAddress(string mailuser)
         {
             using var client = _httpClientFactory.CreateClient("Auth");
             client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var url = $"{client.BaseAddress}customer/getByNameOrEmail/{idUser}";
+            var url = $"{client.BaseAddress}customer/getByNameOrEmail/{mailuser}";
             var req = await client.GetAsync(url);
             if (!req.IsSuccessStatusCode)
                 throw new DataLayersException(req.StatusCode.ToString());

@@ -27,7 +27,7 @@ namespace VignobleWEB.Core.Models
         [JsonProperty("email")]
         public string? Email { get; set; }
 
-        [JsonProperty("adress")]
+        [JsonProperty("address")]
         public string? Address { get; set; }
 
         [JsonProperty("zipCode")]
