@@ -1,0 +1,65 @@
+﻿@page
+@model VignobleWEB.Pages.Account.Manage.Adresses.IndexModel
+@{
+    ViewData["Title"] = "Adresses";
+    ViewData["ActivePage"] = ManageNavPages.Adresse;
+
+    @section Scripts{
+        <script src="~/js/gestionMessageModal.js" asp-append-version="true"></script>
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="row">
+                <div class="col form-floating mb-3">
+                    <input class="form-control" asp-for="Customer.CustomerName"/>
+                    <label asp-for="Customer.CustomerName" class="form-label">Prénom</label>
+                </div>
+                <div class="col form-floating mb-3">
+                    <input class="form-control mb-3" asp-for="Customer.CustomerSurname" />
+                    <label asp-for="Customer.CustomerSurname" class="form-label">Nom</label>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col form-floating mb-3">
+                    <input class="form-control mb-3" asp-for="Customer.Email"/>
+                    <label asp-for="Customer.Email" class="form-label">Mail</label>
+                </div>
+                <div class="col form-floating mb-3">
+                    <input class="form-control mb-3" asp-for="Customer.PhoneNumber" />
+                    <label asp-for="Customer.PhoneNumber" class="form-label">Téléphone</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-floating mb-3">
+                    <input class="form-control mb-3" asp-for="Customer.Address"/>
+                    <label asp-for="Customer.Address" class="form-label">Adresse</label>
+                </div>
+                <div class="col form-floating mb-3">
+                    <input class="form-control mb-3" asp-for="Customer.ZipCode" />
+                    <label asp-for="Customer.ZipCode" class="form-label">Code postal</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-floating mb-3">
+                    <input class="form-control mb-3" asp-for="Customer.Town"/>
+                    <label asp-for="Customer.Town" class="form-label">Ville</label>
+                </div>
+                <div class="col form-floating mb-3">
+                    <input class="form-control mb-3" asp-for="Customer.Country" />
+                    <label asp-for="Customer.Country" class="form-label">Pays</label>
+                </div>
+            </div>
+
+            <div class="col">
+                <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Sauvegarder</button>
+            </div>
+        </form>
+    </div>
+</div>

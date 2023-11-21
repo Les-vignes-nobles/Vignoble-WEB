@@ -4,6 +4,13 @@
 @{
     ViewData["Title"] = "Panier";
 }
+@section Scripts {
+        <script src="~/js/gestionMessageModal.js" asp-append-version="true"></script>
+}
+@if (Model.MessagePourLaModal != null && Model.MessagePourLaModal.Message != string.Empty)
+{
+    Html.RenderPartial("./VuePartielle/Message", Model.MessagePourLaModal);
+}
 <h1>@ViewData["Title"]</h1>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>

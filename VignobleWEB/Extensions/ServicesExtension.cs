@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using VignobleWEB.Core.Application.Repositories;
 using VignobleWEB.Core.Application.Tools;
@@ -24,14 +25,21 @@ public static class ServicesExtension
 
 
         services.TryAddScoped<IAuthService, AuthService>();
+
         services.TryAddScoped<IProductDataLayer, APIProductDataLayer>();
         services.TryAddScoped<ITransportDataLayer, APITransportDataLayer>();
+        services.TryAddScoped<ICustomerDataLayer, APICustomerDataLayer>();
+        services.TryAddScoped<IAccountDataLayer, APIAccountDataLayer>();
+        services.TryAddScoped<IHeaderOrderDataLayer, APIHeaderOrderDataLayer>();
+
         services.TryAddScoped<IProductRepository, ProductRepository>();
         services.TryAddScoped<ITransportRepository, TransportRepository>();
+        services.TryAddScoped<ICustomerRepository, CustomerRepository>();
+        services.TryAddScoped<IAccountRepository, AccountRepository>();
+        services.TryAddScoped<IHeaderOrderRepository, HeaderOrderRepository>();
 
         services.TryAddScoped<ILogInfrastructure, LogInfrastructure>();
 
         services.TryAddScoped<ILogRepository, LogRepository>();
-
     }
 }

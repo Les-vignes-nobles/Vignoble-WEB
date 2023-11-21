@@ -39,10 +39,8 @@ public class APIProductDataLayer : IProductDataLayer
         var json = await req.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<List<Product>>(json) ?? new List<Product>();
     }
-#endregion
+    #endregion
 
     #endregion
 
-    #region Méthodes privées
-    #endregion
 }

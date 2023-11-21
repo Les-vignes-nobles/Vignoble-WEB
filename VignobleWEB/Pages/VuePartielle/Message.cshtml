@@ -1,0 +1,20 @@
+﻿@model Core.Models.Interne.MessageModal
+
+<div id="showmodalMessage" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@Model.Titre</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    @Model.Message
+                </p>
+
+            </div>
+            <div class="modal-footer">
+                <button id="btnCloseModal" class="btn btn-personnalisee-bleu" type="button">Compris</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

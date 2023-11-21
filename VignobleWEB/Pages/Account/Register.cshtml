@@ -1,0 +1,121 @@
+﻿@page "/Register"
+@model VignobleWEB.Pages.Account.RegisterModel
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/gestionMessageModal.js" asp-append-version="true"></script>
+}
+@if (Model.MessagePourLaModal != null && Model.MessagePourLaModal.Message != string.Empty)
+{
+    Html.RenderPartial("./VuePartielle/Message", Model.MessagePourLaModal);
+}
+
+    <form id"registerForm" class="form-control" role="form" method="post">
+        <div class="container">
+            <h2>Création de compte</h2>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-group">
+                <label asp-for="customer.CustomerName" class="col-sm-3 control-label">Prénom*</label>
+                <div class="col-sm-9">
+                    <input type="text" asp-for="customer.CustomerName" id="CustomerName" placeholder="Prénom" class="form-control" autofocus required>
+                    <span asp-validation-for="customer.CustomerName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="customer.CustomerSurname" class="col-sm-3 control-label">Nom*</label>
+                <div class="col-sm-9">
+                    <input type="text" asp-for="customer.CustomerSurname" id="CustomerSurname" placeholder="Nom" class="form-control" autofocus required>
+                    <span asp-validation-for="customer.CustomerSurname" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Email" class="col-sm-3 control-label">Email* </label>
+                <div class="col-sm-9">
+                    <input type="email" asp-for="Input.Email" id="Email" placeholder="Email" aria-required="true" class="form-control" required>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Password" class="col-sm-3 control-label">Mot de passe*</label>
+                <div class="col-sm-9">
+                    <input type="password" asp-for="Input.Password" id="password" placeholder="Mot de passe" class="form-control" required>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ConfirmPassword" class="col-sm-6 control-label">Confirmer le mot de passe*</label>
+                <div class="col-sm-9">
+                    <input type="password" asp-for="Input.ConfirmPassword" id="passwordVerified" placeholder="Mot de passe" class="form-control" required>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="userAPI.BirthDay" class="col-sm-3 control-label">Date de naissance*</label>
+                <div class="col-sm-9">
+                    <input id="BirthDay" class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.ToString("yyyy-MM-dd")" asp-for="userAPI.BirthDay" required>
+                    <span asp-validation-for="userAPI.BirthDay" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.PhoneNumber" class="col-sm-3 control-label">Téléphone </label>
+                <div class="col-sm-9">
+                    <input type="text" asp-for="Input.PhoneNumber" id="PhoneNumber" placeholder="Téléphone" class="form-control" required>
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    <span class="help-block">Votre numéro de téléphone ne sera pas divulgé </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="customer.Address" class="col-sm-3 control-label">adresse* </label>
+                <div class="col-sm-9">
+                    <input type="text" asp-for="customer.Address" id="Address" placeholder="Veuillez entrer une adresse" class="form-control" required>
+                    <span asp-validation-for="customer.Address" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="customer.Town" class="col-sm-3 control-label">Ville* </label>
+                <div class="col-sm-9">
+                    <input type="text" asp-for="customer.Town" id="Town" placeholder="Ville" class="form-control" required>
+                       <span asp-validation-for="customer.Town" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="customer.ZipCode" class="col-sm-3 control-label">Code postal* </label>
+                <div class="col-sm-9">
+                    <input type="text" asp-for="customer.ZipCode" id="ZipCode" placeholder="code postal" class="form-control" required>
+                       <span asp-validation-for="customer.ZipCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="customer.Country" class="col-sm-3 control-label">Pays* </label>
+                <div class="col-sm-9">
+                    <input type="text" asp-for="customer.Country" id="Pays" placeholder="Pays" class="form-control" required>
+                    <span asp-validation-for="customer.Country" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="customer.Gender" class="col-sm-3 control-label">Genre* :</label>
+                <div class="col-sm-9">
+                    <div>
+                        <select class="form-control" asp-for="customer.Gender">
+                            <option value="-1">Veuillez choisir un genre</option>
+                            <option value="Male">Homme</option>
+                            <option value="Female">Femme</option>
+                            <option value="Other">Autre</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="acceptRules">Rules
+                </label>
+            </div> <!-- /.form-group -->
+            <div class="form-group">
+                <div class="col-sm-9 col-sm-offset-3">
+                    <span class="help-block">*Champs requis</span>
+                </div>
+            </div>
+            <button id="registerSubmit" type="submit" class="btn btn-primary btn-block">Créer un compte</button>
+        </div> <!-- ./container -->
+    </form> <!-- /form -->
+
