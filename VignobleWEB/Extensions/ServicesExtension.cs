@@ -31,12 +31,14 @@ public static class ServicesExtension
         services.TryAddScoped<ICustomerDataLayer, APICustomerDataLayer>();
         services.TryAddScoped<IAccountDataLayer, APIAccountDataLayer>();
         services.TryAddScoped<IHeaderOrderDataLayer, APIHeaderOrderDataLayer>();
+        services.TryAddScoped<IPictureDataLayer, APIPictureDataLayer>();
 
         services.TryAddScoped<IProductRepository, ProductRepository>();
         services.TryAddScoped<ITransportRepository, TransportRepository>();
         services.TryAddScoped<ICustomerRepository, CustomerRepository>();
         services.TryAddScoped<IAccountRepository, AccountRepository>();
         services.TryAddScoped<IHeaderOrderRepository, HeaderOrderRepository>();
+        services.TryAddScoped<IPictureRepository, PictureRepository>();
 
         services.TryAddScoped<ILogInfrastructure, LogInfrastructure>();
 

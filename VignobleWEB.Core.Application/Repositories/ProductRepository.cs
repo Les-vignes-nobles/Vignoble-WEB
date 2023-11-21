@@ -11,14 +11,16 @@ namespace VignobleWEB.Core.Application.Repositories
     {
         #region Champs
         private readonly IProductDataLayer _dataLayer;
+        private readonly IPictureRepository _pictureRepository;
         private readonly ILogRepository _logRepository;
         #endregion
 
         #region Constructeur
-        public ProductRepository(IProductDataLayer dataLayer, ILogRepository logRepository)
+        public ProductRepository(IProductDataLayer dataLayer, ILogRepository logRepository, IPictureRepository pictureRepository)
         {
             _dataLayer = dataLayer;
             _logRepository = logRepository;
+            _pictureRepository = pictureRepository;
         }
         #endregion
 
@@ -35,6 +37,10 @@ namespace VignobleWEB.Core.Application.Repositories
 
                 foreach (Product product in listAllProducts)
                 {
+                    if (product.PictureId != null)
+                    {
+                        product.Picture = _pictureRepository.GetImageById(product.PictureId).Result;
+                    }
                     listActiveProducts.Add(product);
                 }
                 

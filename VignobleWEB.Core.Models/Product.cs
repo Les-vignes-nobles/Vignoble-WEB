@@ -38,5 +38,9 @@ namespace VignobleWEB.Core.Models
         [JsonPropertyName("Stock")]
         public Stock Stock { get; set; }
 
+        [JsonPropertyName("pictureId")]
+        public string? PictureId { get; set; }
+        public Picture Picture { get; set; }
+
     }
 }

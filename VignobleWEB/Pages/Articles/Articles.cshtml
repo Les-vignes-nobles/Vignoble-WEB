@@ -18,7 +18,14 @@
                 { 
                     <div class="col">
                         <div class="card h-100 shadow-sm">
-                            <img src=@item.Image class="card-img-top" alt="...">
+                        @if (item.Picture != null)
+                        {
+                            <img src="data:image/png;base64,@item.Picture.Content" class="card-img-top" alt="...">
+                        }
+                        else
+                        {
+                            <img src="/img/img1.jpg" class="card-img-top" alt="...">
+                        }
                             <div class="card-body">
                                 <div class="clearfix mb-3">
                                     <span class="float-start badge rounded-pill bg-success">@item.UnitPrice &euro;</span>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
+using System.Drawing;
 using VignobleWEB.Core.Application.RepositoriesException;
 using VignobleWEB.Core.Application.Tools;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
