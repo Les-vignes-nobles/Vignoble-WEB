@@ -51,6 +51,29 @@ namespace VignobleWEB.Core.Application.Repositories
                 throw new RepositoryException($"Une erreur s'est produite dans la récupération des données via l'API : {ex.Message}");
             }
         }
+
+        public List<Product> GetAllActiveProductsResearch(string searchProduct)
+        {
+            List<Product> listActiveProduct = GetAllActiveProducts().Result;
+
+            if (searchProduct == null || searchProduct == string.Empty)
+            {
+                return listActiveProduct;
+            }
+            else
+            {
+                List<Product> listActiveProductResearch= new List<Product>();
+
+                foreach (Product product in listActiveProduct)
+                {
+                    if(product.Name.ToLower().Contains(searchProduct.ToLower()) || product.Description.ToLower().Contains(searchProduct.ToLower()))
+                    {
+                        listActiveProductResearch.Add(product);
+                    }
+                }
+                return listActiveProductResearch;
+            }
+        }
         #endregion
 
         #endregion
