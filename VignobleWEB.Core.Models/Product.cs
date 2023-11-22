@@ -20,8 +20,7 @@ namespace VignobleWEB.Core.Models
         public bool Activated { get; set; }
         [JsonPropertyName("Category")]
         public int Category { get; set; }
-        [JsonPropertyName("Image")]
-        public string? Image { get; set; }
+
         [JsonPropertyName("OrderAuto")]
         public bool OrderAuto { get; set; }
 
@@ -40,6 +39,7 @@ namespace VignobleWEB.Core.Models
 
         [JsonPropertyName("pictureId")]
         public string? PictureId { get; set; }
+        [JsonPropertyName("picture")]
         public Picture Picture { get; set; }
 
     }

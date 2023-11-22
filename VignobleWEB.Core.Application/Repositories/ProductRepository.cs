@@ -40,7 +40,7 @@ namespace VignobleWEB.Core.Application.Repositories
                 {
                     if (product.PictureId != null)
                     {
-                        product.Picture = _pictureRepository.GetImageById(product.PictureId).Result;
+                        //product.Picture = _pictureRepository.GetImageById(product.PictureId).Result;
                     }
                     listActiveProducts.Add(product);
                 }
@@ -59,17 +59,11 @@ namespace VignobleWEB.Core.Application.Repositories
             {
                 Product product = _dataLayer.GetProductById(productId).Result;
 
-                if (product.PictureId != null) 
-                {
-                    product.Picture = _pictureRepository.GetImageById(product.PictureId).Result;
-                
-                    return product;
-                }
-                else
-                {
-                    return product;
-                }
-                
+                Picture picture = _pictureRepository.GetImageById(product.PictureId).Result;
+                product.Picture = picture;
+
+                return product;
+
             }
             catch (DataLayersException ex)
             {

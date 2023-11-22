@@ -32,7 +32,6 @@
 </section>
 
  <section class="py-5 bg-light">
-
     <div class="container px-4 px-lg-5 mt-5">
         <h2 class="fw-bolder mb-4">Produits similaires</h2>
         @if (Model.Products.Count > 0)
@@ -43,7 +42,7 @@
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="data:image/png;base64,@item.Picture.Content" alt="..." />
+                            <img class="card-img-top" src="data:image/png;base64,@item.Picture.ContentMini" alt="..." />
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
