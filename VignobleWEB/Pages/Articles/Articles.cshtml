@@ -33,7 +33,7 @@
                                 <h4 class="card-title">@item.Name</h4>
                                 <h5 class="card-text">@item.Description</h5>
                                 <div class="d-grid gap-2 my-4">
-                                    <a href="#" class="btn btn-warning">Plus d'info</a>
+                                    <a asp-page="/Articles/Details" asp-route-idReference="@item.Id" class="btn btn-warning">Plus d'info</a>
                                 </div>
                             </div>
                         </div>

@@ -9,5 +9,12 @@ namespace VignobleWEB.Core.Interfaces.Infrastructure.DataLayers
         /// </summary>
         /// <returns>Retourne la liste de tout les produits</returns>
         Task<List<Product>> GetAllProducts();
+
+        /// <summary>
+        /// Recupère les données du produits
+        /// </summary>
+        /// <param name="productId">Guid du produit</param>
+        /// <returns>le produit</returns>
+        Task<Product> GetProductById(string productId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using VignobleWEB.Core.Application.RepositoriesException;
+﻿using System.Reflection;
+using VignobleWEB.Core.Application.RepositoriesException;
 using VignobleWEB.Core.Infrastructure.ExceptionPersonnalisee;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
 using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
@@ -47,6 +48,30 @@ namespace VignobleWEB.Core.Application.Repositories
                 return listActiveProducts;
             }
             catch(DataLayersException ex)
+            {
+                throw new RepositoryException($"Une erreur s'est produite dans la récupération des données via l'API : {ex.Message}");
+            }
+        }
+
+        public async Task<Product> GetProductById(string productId)
+        {
+            try
+            {
+                Product product = _dataLayer.GetProductById(productId).Result;
+
+                if (product.PictureId != null) 
+                {
+                    product.Picture = _pictureRepository.GetImageById(product.PictureId).Result;
+                
+                    return product;
+                }
+                else
+                {
+                    return product;
+                }
+                
+            }
+            catch (DataLayersException ex)
             {
                 throw new RepositoryException($"Une erreur s'est produite dans la récupération des données via l'API : {ex.Message}");
             }

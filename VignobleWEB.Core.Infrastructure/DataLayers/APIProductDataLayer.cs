@@ -39,6 +39,20 @@ public class APIProductDataLayer : IProductDataLayer
         var json = await req.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<List<Product>>(json) ?? new List<Product>();
     }
+
+    public async Task<Product> GetProductById(string productId)
+    {
+        using var client = _httpClientFactory.CreateClient("Auth");
+        client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        var url = $"{client.BaseAddress}product/{productId}";
+        var req = await client.GetAsync(url);
+        if (!req.IsSuccessStatusCode)
+            throw new DataLayersException(req.StatusCode.ToString());
+
+        var json = await req.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<Product>(json) ?? new Product();
+    }
     #endregion
 
     #endregion
