@@ -11,6 +11,13 @@ namespace VignobleWEB.Core.Interfaces.Application.Repositories
         Task<List<Product>> GetAllActiveProducts();
 
         /// <summary>
+        /// Récupère la liste des produits actifs et filtre
+        /// </summary>
+        /// <param name="searchProduct"></param>
+        /// <returns></returns>
+        List<Product> GetAllActiveProductsResearch(string searchProduct);
+
+        /// <summary>
         /// Recupère les données du produits
         /// </summary>
         /// <param name="productId">Guid du produit</param>

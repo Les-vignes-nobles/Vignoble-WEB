@@ -10,6 +10,24 @@
 @{
     ViewData["Title"] = "Articles";
 
+    <div class="titreSeparateur">Filtres</div>
+
+<form method="post">
+    <div class="row">
+        <div class="col">
+            <label asp-for="SearchProduct">Recherche :</label>
+            <input class="form-control" asp-for="SearchProduct" type="text" value="@Model.SearchProduct" />
+        </div>
+        <div class="col">
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-right" style="margin-top:5px;">
+            <button class="btn btn-primary" type="submit">Recherche</button>
+        </div>
+    </div>
+</form>
+
     @if (Model.ListProducts.Count > 0)
     {
         <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">

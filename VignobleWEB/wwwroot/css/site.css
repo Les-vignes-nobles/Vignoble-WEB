@@ -68,3 +68,13 @@ ul {
     list-style-type: none;
     padding: 0;
 }
+
+.titreSeparateur {
+    color: #000000;
+    padding: 5px 0;
+    font-family: Viga;
+    font-size: 1.5rem;
+    background-color: #DAD6D6;
+    text-align: center;
+    margin: 20px 0;
+}

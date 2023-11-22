@@ -34,7 +34,28 @@ namespace VignobleWEB.Pages.Articles
 
             try
             {
-                RecupererListeProduits();
+                RecupererListeProduits(string.Empty);
+            }
+            catch (RepositoryException ex)
+            {
+                _logRepository.LogAvertissement(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessagePourLaModal.Message = "Une erreur imprévue s'est produite, si le problème perciste contacter le service informatique";
+                _logRepository.LogErreur("Une erreut imprévu s'est produite !", ex);
+            }
+
+            return result;
+        }
+
+        public IActionResult OnPost()
+        {
+            IActionResult result = Page();
+
+            try
+            {
+                RecupererListeProduits(SearchProduct);
             }
             catch (RepositoryException ex)
             {
@@ -52,13 +73,15 @@ namespace VignobleWEB.Pages.Articles
         #endregion
 
         #region M�thodes priv�es
-        private void RecupererListeProduits()
+        private void RecupererListeProduits(string searchProduct)
         {
-            ListProducts = _productRepository.GetAllActiveProducts().Result;
+            ListProducts = _productRepository.GetAllActiveProductsResearch(searchProduct);
+            SearchProduct = searchProduct;
         }
         #endregion
 
         #region Propriétés
+        [BindProperty] public string SearchProduct { get; set; } = string.Empty;
         public List<Product> ListProducts { get; set; } = new List<Product>();
         public Core.Models.Interne.MessageModal MessagePourLaModal { get; set; } = new() { Titre = "Une erreur s'est produite" };
 
