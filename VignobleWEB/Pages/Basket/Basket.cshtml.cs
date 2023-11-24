@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using VignobleWEB.Core.Application.RepositoriesException;
 using VignobleWEB.Core.Application.Tools;
 using VignobleWEB.Core.Infrastructure.Token;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
 using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
 using VignobleWEB.Core.Models;
+using VignobleWEB.Core.Models.Interne;
 
 namespace VignobleWEB.Pages.Basket;
 
@@ -36,18 +38,8 @@ public class BasketModel : PageModel
 
         try
         {
-            listProducts = await _productRepository.GetAllActiveProducts();
-            listTransports = await _transportRepository.GetAllActiveTransports();
-
-            listSelectedTransports = new SelectList(
-                listTransports.Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }),
-                "Value", "Text");
-
-            RecupListePanier();
+            GetListShop();
+            GetListTransports();
         }
         catch (RepositoryException ex)
         {
@@ -86,24 +78,33 @@ public class BasketModel : PageModel
     #endregion
 
     #region Méthodes privées
-    private void RecupListePanier()
+    private void GetListTransports()
     {
-        listProducts = _productRepository.GetAllActiveProducts().Result;
+        listTransports = _transportRepository.GetAllActiveTransports().Result;
 
-        string panier = HttpContext.Session.GetString("panier");
-
-        if (panier == null)
-            return;
-        string[] listIds = panier.Split("/");
-
-        foreach (string id in listIds)
+        foreach (var item in listTransports)
         {
-            foreach (var product in listProducts)
+            listSelectedTransports.Add(new SelectListItem
             {
-                if (product.Id.ToString() == id)
+                Text = item.Name + " " + item.Price,
+                Value = item.Id.ToString()
+            }) ;
+        }
+    }
+
+    private void GetListShop()
+    {
+        if(Request.Cookies["CardItem"] != null)
+        {
+            listCardItems = JsonConvert.DeserializeObject<List<CardItem>>(Request.Cookies["CardItem"]);
+
+            if(listCardItems != null)
+            {
+                foreach (CardItem item in listCardItems)
                 {
+                    Product product = _productRepository.GetProductById(item.IdProduct).Result;
                     listProducts.Add(product);
-                    prixTotal += product.UnitPrice;
+                    nbProduitsTotal += item.Quantity;
                 }
             }
         }
@@ -115,14 +116,17 @@ public class BasketModel : PageModel
     #region Propriétés
 
     public Core.Models.Interne.MessageModal MessagePourLaModal { get; set; } = new() { Titre = "Une erreur s'est produite" };
-    public int Id { get; set; } = 1;
-    public List<Product> listProducts;
-    public List<Transport> listTransports;
-    public SelectList listSelectedTransports;
+    public List<CardItem> listCardItems { get; set; } = new();
+    public List<Product> listProducts { get; set; } = new();
+
+    public List<SelectListItem> listSelectedTransports { get; set; } = new List<SelectListItem>();
+    public Guid Id { get; set; }
+    public List<Transport> listTransports { get; set; } = new List<Transport>();
 
     public string Token { get; } = TokenManager.Instance.GetToken();
     public int nbProduits;
     public double prixTotal;
+    public int nbProduitsTotal;
 
     #endregion
 }

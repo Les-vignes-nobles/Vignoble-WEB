@@ -1,4 +1,5 @@
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Http;
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
@@ -44,7 +45,8 @@
                 <a class="btn btn-outline-dark" asp-area="" asp-page="/Basket/Basket">
                     <i class="bi-cart-fill me-1"></i>
                     Panier
-                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+
+                    <span id="nbProducts" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                 </a>
             </div>
             @if (SignInManager.IsSignedIn(User))
@@ -101,7 +103,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/navbar.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

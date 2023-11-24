@@ -1,12 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 using VignobleWEB.Core.Infrastructure.ExceptionPersonnalisee;
 using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
 using VignobleWEB.Core.Interfaces.Infrastructure.Tools;
