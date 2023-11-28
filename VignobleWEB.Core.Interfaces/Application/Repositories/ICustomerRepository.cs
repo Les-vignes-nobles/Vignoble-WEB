@@ -28,6 +28,12 @@ namespace VignobleWEB.Core.Interfaces.Application.Repositories
         #endregion
 
         #region Update
+        /// <summary>
+        /// Permet de modifier l'addresse de livraison
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        Task<bool> UpdateAddress(Customer customer);
         #endregion
 
         #region Delete

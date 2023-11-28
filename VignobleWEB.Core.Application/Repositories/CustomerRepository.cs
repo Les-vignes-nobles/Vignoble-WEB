@@ -31,7 +31,7 @@ namespace VignobleWEB.Core.Application.Repositories
             {
                 VerifIntegriteDonnees(customer);
 
-                return _dataLayer.CreateCustomer(customer).Result;
+                return await _dataLayer.CreateCustomer(customer);
             }
             catch (DataLayersException ex)
             {
@@ -54,6 +54,22 @@ namespace VignobleWEB.Core.Application.Repositories
         }
         #endregion
 
+        #region Update (Modification)
+        public async Task<bool> UpdateAddress(Customer customer)
+        {
+            try
+            {
+                VerifIntegriteDonnees(customer);
+
+                return await _dataLayer.CreateCustomer(customer);
+            }
+            catch (DataLayersException ex)
+            {
+                throw new RepositoryException($"Une erreur s'est produite dans la récupération des données via l'API : {ex.Message}");
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Méthodes privées
@@ -62,7 +78,6 @@ namespace VignobleWEB.Core.Application.Repositories
             if (customer == null) { throw new RepositoryException("L'adresse de livraison ne peut pas être vide !"); }
             if (customer.User == null) { throw new RepositoryException("L'utilsateur ne peut pas être vide !"); }
 
-            //if (customer.Id == Guid.Empty || customer.Id == null) { throw new RepositoryException("L'ID ne peut pas être vide !"); }
             if (customer.CustomerName == null || customer.CustomerName == string.Empty) { throw new RepositoryException("Le prénom ne peut pas être vide !"); }
             if (customer.CustomerSurname == null || customer.CustomerSurname == string.Empty) { throw new RepositoryException("Le nom ne peut pas être vide !"); }
             if (customer.Address == null || customer.Address == string.Empty) { throw new RepositoryException("L'adresse ne peut pas être vide !"); }

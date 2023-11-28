@@ -1,9 +1,7 @@
 ﻿@page "/Basket"
 @using System.Globalization
 @model BasketModel
-@{
-    ViewData["Title"] = "Panier";
-}
+
 @section Scripts {
         <script src="~/js/gestionMessageModal.js" asp-append-version="true"></script>
         <script src="~/js/Basket.js" asp-append-version="true"></script>
@@ -12,10 +10,9 @@
 {
     Html.RenderPartial("./VuePartielle/Message", Model.MessagePourLaModal);
 }
-<h1>@ViewData["Title"]</h1>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<section>
+<form method="post">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12">
@@ -86,7 +83,7 @@
                                                 
                                                 <div class="col-md-1 col-lg-1 col-xl-1">
                                                     <a>
-                                                        <img src="/img/Supprimer.png" style="width: 32px;" alt="logo" id="btnSupp[@i]">
+                                                        <img class="imgDeleteClass" src="/img/Supprimer.png" style="width: 32px;" alt="logo" id="btnSupp_@i">
                                                         <input id="listProducts[@i].Id" value="@product.Id" hidden />
                                                     </a>
                                                 </div>
@@ -125,14 +122,14 @@
                                     </div>
                                     <h5 class="mb-3">Transports</h5>
                                    
-                                    <select class="form-control" id="dropdown-transports" asp-items="Model.listSelectedTransports"></select>
+                                    <select class="form-control" id="dropdown-transports" asp-for="transport.Id" asp-items="Model.listSelectedTransports"></select>
 
                                     <h5 class="mb-3">Code promo</h5>
                                     <div class="mb-5">
                                         <div class="form-outline">
                                             <input type="text" id="discountValue" class="form-control form-control-lg"/>
                                             <label class="form-label" for="form3Examplea2">Entrez un code promo</label>
-                                            <button id="btn-discount" class="btn btn-secondary" >Valider le code promo</button>
+                                            <a id="btn-discount" class="btn btn-secondary" >Valider le code promo</a>
                                         </div>
                                     </div>
                                     <hr class="my-4">
@@ -140,8 +137,8 @@
                                         <h5 class="text-uppercase">Prix total</h5>
                                         <h5 id="total-price">@Model.listProducts.Sum(x => x.UnitPrice) €</h5>
                                     </div>
-                                    <button type="button" class="btn btn-dark btn-block btn-lg"
-                                            data-mdb-ripple-color="dark">
+                                    <button type="submit" class="btn btn-dark btn-block btn-lg"
+                                            data-mdb-ripple-color="dark" >
                                         Valider
                                     </button>
                                 </div>
@@ -152,8 +149,76 @@
             </div>
         </div>
     </div>
-</section>
+</form>
 @{
     var productTotal = Model.listProducts.Sum(x => x.UnitPrice).ToString("0.00", CultureInfo.InvariantCulture);
     var token = Model.Token;
 }
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        let productTotalJs = parseFloat('@productTotal');
+        let tokenJs = '@token';
+
+        $('select#dropdown-transports').change(function (event) {
+            let selectedOption = $(this).find(":selected");
+            let idTransport = parseInt(selectedOption.val());
+
+            if (idTransport !== -1){
+                $.ajax({
+                    url: `http://localhost:5005/api/transport/${$(this).val()}`,
+                    type: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + tokenJs
+                    },
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (transportData) {
+                        let transportPrice = parseFloat(transportData.price);
+
+                        if (!isNaN(transportPrice) && !isNaN(productTotalJs)) {
+                            const totalPrice = productTotalJs + transportPrice;
+                            $('#total-price').text(totalPrice.toFixed(2) + ' €');
+                        } else {
+                            console.error('One of the values is NaN', { productTotalJs, transportPrice });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+            else{
+                $('#total-price').text(productTotalJs.toFixed(2) + ' €');
+            }
+        });
+
+        $('a#btn-discount').click(function (event) {
+            let valueInput = document.getElementById("discountValue").value;
+
+            $.ajax({
+                url: `http://localhost:5005/api/discount/byName/${valueInput}`,
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + tokenJs
+                },
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (discountData) {
+                    let discountPrice = parseFloat(discountData.value);
+
+                    if (!isNaN(discountPrice) && !isNaN(productTotalJs)) {
+                        const totalPrice = productTotalJs - discountPrice;
+                        $('#total-price').text(totalPrice.toFixed(2) + ' €');
+                    } else {
+                        console.error('One of the values is NaN', { productTotalJs, discountPrice });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>

@@ -51,6 +51,29 @@ namespace VignobleWEB.Pages.Account.Manage.Adresses
 
             return Page();
         }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            try
+            {
+                if (await _customerRepository.UpdateAddress(Customer))
+                {
+                    return Page();
+                }
+            }
+            catch (RepositoryException ex)
+            {
+
+                _logRepository.LogAvertissement(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessagePourLaModal.Message = "Une erreur imprévue s'est produite, si le problème perciste contacter le service informatique";
+                _logRepository.LogErreur("Une erreut imprévu s'est produite !", ex);
+            }
+
+            return Page();
+        }
         #endregion
 
         #region Méthodes privées

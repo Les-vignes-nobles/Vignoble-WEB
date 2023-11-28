@@ -4,7 +4,7 @@ namespace VignobleWEB.Core.Models
 {
     public class Product
     {
-        [JsonPropertyName("Id")]
+        [JsonPropertyName("id")]
         public Guid Id { get; set; }
         [JsonPropertyName("Reference")]
         public string Reference { get; set; }
@@ -14,11 +14,11 @@ namespace VignobleWEB.Core.Models
         public string Description { get; set; }
         [JsonPropertyName("Year")]
         public int Year { get; set; }
-        [JsonPropertyName("UnitPrice")]
+        [JsonPropertyName("unitPrice")]
         public double UnitPrice { get; set; }
-        [JsonPropertyName("Activated")]
+        [JsonPropertyName("activated")]
         public bool Activated { get; set; }
-        [JsonPropertyName("Category")]
+        [JsonPropertyName("category")]
         public int Category { get; set; }
 
         [JsonPropertyName("OrderAuto")]
@@ -28,9 +28,6 @@ namespace VignobleWEB.Core.Models
         public Guid SupplierId { get; set; }
         [JsonPropertyName("Supplier")]
         public Supplier Supplier { get; set; }
-
-        [JsonPropertyName("LineOrders")]
-        public ICollection<LineOrder>? LineOrders { get; set; }
 
         [JsonPropertyName("StockId")]
         public Guid StockId { get; set; }

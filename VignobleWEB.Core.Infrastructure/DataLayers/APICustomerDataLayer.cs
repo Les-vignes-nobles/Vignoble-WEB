@@ -89,6 +89,51 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         }
         #endregion
 
+        #region Update (Modification)
+        public async Task<bool> UpdateAddress(Customer customer)
+        {
+            Customer customerUpdate = new Customer
+            {
+                CustomerSurname = customer.CustomerSurname,
+                CustomerName = customer.CustomerName,
+                Gender = customer.Gender,
+                PhoneNumber = customer.PhoneNumber,
+                Email = customer.Email,
+                Address = customer.Address,
+                ZipCode = customer.ZipCode,
+                Town = customer.Town,
+                Country = customer.Country
+            };
+
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(customerUpdate), Encoding.UTF8, "application/json");
+
+            using (HttpClient client = _httpClientFactory.CreateClient("Auth"))
+            {
+                try
+                {
+                    client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
+                    var url = $"{client.BaseAddress}customer";
+                    HttpResponseMessage response = await client.PutAsync(url, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                    }
+                    else
+                    {
+                        _logInfrastructure.LogInfo($"Erreur lors de la requête PUT. Code d'erreur : {response.StatusCode}");
+                        Console.WriteLine(await response.Content.ReadAsStringAsync());
+                    }
+                }
+                catch (DataLayersException ex)
+                {
+                    throw;
+                }
+            }
+            return true;
+        }
+        #endregion
+
         #endregion
     }
 }

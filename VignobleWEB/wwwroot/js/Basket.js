@@ -56,13 +56,40 @@ document.addEventListener("DOMContentLoaded", function () {
                 var item = cartItems[i];
 
                 if (item.IdProduct == document.getElementById("listProducts[" + valLigne[1] + "].Id").value) {
+
                     item.Quantity = input.value;
+
+                    if (item.Quantity == 0) {
+                        delete cartItems[i];
+
+                        cartItems = cartItems.filter(function (element) {
+                            return element !== null;
+                        });
+                    }
                     
                     setCookie('CardItem', JSON.stringify(cartItems));
 
                     location.reload();
                 }
             }
+        });
+    });
+
+    var imgsDelete = document.querySelectorAll('.imgDeleteClass');
+
+    imgsDelete.forEach(function (event) {
+        event.addEventListener('click', function () {
+            var valLigne = event.id.split("_");
+
+            delete cartItems[valLigne[1]];
+
+            cartItems = cartItems.filter(function (element) {
+                return element !== null;
+            });
+
+            setCookie('CardItem', JSON.stringify(cartItems));
+
+            location.reload();
         });
     });
 });
@@ -83,59 +110,3 @@ for (var i = 0; i < cartItems.length; i++) {
 
 document.getElementById("totalPriceWithOutTransports").innerHTML = "Total : " + totalPriceWithOutTransports.toString().replace(".", ",") + " €";
 
-$(document).ready(function () {
-    let productTotalJs = parseFloat('@productTotal');
-    let tokenJs = '@token';
-
-    $('select#dropdown-transports').change(function (event) {
-        let selectedOption = $(this).find(":selected");
-        let idTransport = parseInt(selectedOption.val());
-        $.ajax({
-            url: `http://82.165.237.163:5000/api/transport/${$(this).val()}`,
-            type: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + tokenJs
-            },
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (transportData) {
-                let transportPrice = parseFloat(transportData.price);
-
-                if (!isNaN(transportPrice) && !isNaN(productTotalJs)) {
-                    const totalPrice = productTotalJs + transportPrice;
-                    $('#total-price').text(totalPrice.toFixed(2) + ' €');
-                } else {
-                    console.error('One of the values is NaN', { productTotalJs, transportPrice });
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error(error);
-            }
-        });
-    });
-
-    $('button#btn-discount').click(function (event) {
-        $.ajax({
-            url: `http://82.165.237.163:5000/api/discount/${document.getElementById("discountValue").value}`,
-            type: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + tokenJs
-            },
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (discountData) {
-                let discountPrice = parseFloat(discountData.value);
-
-                if (!isNaN(discountPrice) && !isNaN(productTotalJs)) {
-                    const totalPrice = productTotalJs - discountPrice;
-                    $('#total-price').text(totalPrice.toFixed(2) + ' €');
-                } else {
-                    console.error('One of the values is NaN', { productTotalJs, discountPrice });
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error(error);
-            }
-        });
-    });
-});
