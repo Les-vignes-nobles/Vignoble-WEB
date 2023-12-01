@@ -26,6 +26,23 @@ namespace VignobleWEB.Core.Application.Repositories
 
         #region Méthodes publiques
 
+        #region Create (Ajout)
+        public bool CreateOrder(HeaderOrder headerOrder, List<LineOrder> lineOrders)
+        {
+            try
+            {
+                CheckDataOrder(headerOrder, lineOrders);
+
+                _dataLayer.CreateOrder(headerOrder, lineOrders);
+            }
+            catch (DataLayersException ex)
+            {
+                throw new RepositoryException($"Une erreur s'est produite dans la récupération des données via l'API : {ex.Message}");
+            }
+            return true;
+        }
+        #endregion
+
         #region Read (Lecture)
         public Task<List<HeaderOrder>> RecupererListeEnteteCommandeDunClient(Guid idUser)
         {
@@ -35,12 +52,23 @@ namespace VignobleWEB.Core.Application.Repositories
             }
             catch (DataLayersException ex)
             {
-
                 throw new RepositoryException($"Une erreur s'est produite dans la récupération des données via l'API : {ex.Message}");
             }
         }
         #endregion
 
+        #endregion
+
+        #region Méthodes privées
+        private void CheckDataOrder(HeaderOrder headerOrder, List<LineOrder> lineOrders)
+        {
+            if (headerOrder.NumOrder == 0|| headerOrder.NumOrder == null) { throw new RepositoryException("Le numéro de commande ne peut pas être nul !"); }
+            if (headerOrder.Customer == null) { throw new RepositoryException("L'adresse de livraison ne peut pas être vide !"); }
+            if (headerOrder.CustomerId == null) { throw new RepositoryException("L'id de l'adresse de livraison ne peut pas être nul"); }
+            if (headerOrder.SupplierId == null) { throw new RepositoryException("L'id du fournisseur ne peut pas être nul"); }
+            if (headerOrder.Supplier == null) { throw new RepositoryException("Le fournisseur ne peut pas être nul"); }
+            if (headerOrder.Date == null) { throw new RepositoryException("La date de création de la commande ne peut pas être nulle !"); }
+        }
         #endregion
     }
 }

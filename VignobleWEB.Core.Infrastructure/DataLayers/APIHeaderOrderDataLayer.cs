@@ -30,6 +30,10 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #region Méthodes publiques
 
         #region Create (Ajout)
+        public bool CreateOrder(HeaderOrder headerOrder, List<LineOrder> lineOrders)
+        {
+            return true;
+        }
         #endregion
 
         #region Read (Lecture)

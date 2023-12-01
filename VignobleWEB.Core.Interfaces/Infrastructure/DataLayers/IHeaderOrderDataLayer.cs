@@ -10,6 +10,7 @@ namespace VignobleWEB.Core.Interfaces.Infrastructure.DataLayers
     public interface IHeaderOrderDataLayer
     {
         #region Create 
+        bool CreateOrder(HeaderOrder headerOrder, List<LineOrder> lineOrders);
         #endregion
 
         #region Read

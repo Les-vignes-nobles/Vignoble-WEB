@@ -10,6 +10,7 @@ namespace VignobleWEB.Core.Interfaces.Application.Repositories
     public interface IHeaderOrderRepository
     {
         #region Create 
+        bool CreateOrder(HeaderOrder headerOrder, List<LineOrder> lineOrders);
         #endregion
 
         #region Read
