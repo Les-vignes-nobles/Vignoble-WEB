@@ -20,16 +20,23 @@ public class BasketModel : PageModel
     private readonly IProductRepository _productRepository;
     private readonly ITransportRepository _transportRepository;
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly IHeaderOrderRepository _headerOrderRepository;
+    private readonly ICustomerRepository _customerRepository;
+    private readonly IAccountRepository _accountRepository;
     #endregion
 
     #region Constructeur
     public BasketModel(ILogRepository logRepository, IProductRepository productRepository,
-        ITransportRepository transportRepository, UserManager<IdentityUser> userManager)
+        ITransportRepository transportRepository, UserManager<IdentityUser> userManager, IHeaderOrderRepository headerOrderRepository, 
+        ICustomerRepository customerRepository, IAccountRepository accountRepository)
     {
         _logRepository = logRepository;
         _productRepository = productRepository;
         _transportRepository = transportRepository;
         _userManager = userManager;
+        _headerOrderRepository = headerOrderRepository;
+        _customerRepository = customerRepository;
+        _accountRepository = accountRepository;
     }
     #endregion
 
@@ -63,26 +70,54 @@ public class BasketModel : PageModel
 
         try
         {
+            var res = Request.Cookies["CardItem"];
+            var user = await _userManager.GetUserAsync(User);
+
+            listCardItems = JsonConvert.DeserializeObject<List<CardItem>>(res);
+
             if (await _userManager.GetUserAsync(User) == null)
             {
                 MessagePourLaModal.Message = "Vous devez être connecter pour valider la commande !";
             }
             else
             {
-                if (transport.Id.ToString() == "00000000-0000-0000-0000-000000000000")
+                if (listCardItems.Count != 0)
                 {
-                    MessagePourLaModal.Message = "Vous devez choisir un type de transport pour valider la commande !";
+                    if (transport.Id.ToString() == "00000000-0000-0000-0000-000000000000")
+                    {
+                        MessagePourLaModal.Message = "Vous devez choisir un type de transport pour valider la commande !";
+                    }
+                    else
+                    {
+                        if(await CreateOrder(user))
+                        {
+                            var cookieOptions = new CookieOptions();
+                            cookieOptions.Expires = DateTime.Now.AddDays(-30);
+                            cookieOptions.Path = "/";
+
+                            Response.Cookies.Append("CardItem", JsonConvert.SerializeObject(null), cookieOptions);
+
+                            MessagePourLaModal.Titre = "Information";
+                            MessagePourLaModal.Message = "La commande a bien été enregistré, vous pouvez la retouver dans votre historique de commande pour voir le suivi ! ";
+
+                            GetListTransports();
+
+                        }
+                        else
+                        {
+                            MessagePourLaModal.Message = "Une erreur est surevenue lors de la création de la commande, veuillez contacter le support du site ";
+                            GetListShop();
+                            GetListTransports();
+                        }
+                    }
                 }
                 else
                 {
-                    listCardItems = JsonConvert.DeserializeObject<List<CardItem>>(Request.Cookies["CardItem"]);
-
-
+                    MessagePourLaModal.Message = "Vous devez avoir au moins un article dans le panier !";
+                    GetListShop();
+                    GetListTransports();
                 }
             }
-
-            GetListShop();
-            GetListTransports();
         }
         catch (RepositoryException ex)
         {
@@ -100,6 +135,34 @@ public class BasketModel : PageModel
     #endregion
 
     #region Méthodes privées
+    private async Task<bool> CreateOrder(IdentityUser identityUser)
+    {
+        List<LineOrderDto> lineOrderDtos = new List<LineOrderDto>();
+
+        foreach (CardItem item in listCardItems)
+        {
+            lineOrderDtos.Add(new LineOrderDto
+            {
+                HeaderOrderId = Guid.NewGuid(),
+                QuantitySupplied = 0,
+                Quantity = item.Quantity,
+                ProductId = new Guid(item.IdProduct)
+            });
+        }
+       
+        Customer customer = _customerRepository.GetAddress(identityUser.Email).Result;
+
+        CreateOrderDto createOrderDto = new CreateOrderDto 
+        {
+            Status = 0,
+            Date = DateTime.Now,
+            Paid = true,
+            CustomerId = customer.Id,
+            LineOrders = lineOrderDtos
+        };
+
+        return await _headerOrderRepository.CreateOrder(createOrderDto);
+    }
     private void GetListTransports()
     {
         listTransports = _transportRepository.GetAllActiveTransports().Result;
@@ -143,7 +206,7 @@ public class BasketModel : PageModel
 
     #region Propriétés
 
-    public Core.Models.Interne.MessageModal MessagePourLaModal { get; set; } = new() { Titre = "Une erreur s'est produite" };
+    public MessageModal MessagePourLaModal { get; set; } = new() { Titre = "Une erreur s'est produite" };
     public List<CardItem> listCardItems { get; set; } = new();
     public List<Product> listProducts { get; set; } = new();
 

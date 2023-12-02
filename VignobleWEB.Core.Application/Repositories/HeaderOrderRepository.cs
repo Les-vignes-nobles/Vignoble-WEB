@@ -8,6 +8,7 @@ using VignobleWEB.Core.Infrastructure.ExceptionPersonnalisee;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
 using VignobleWEB.Core.Interfaces.Infrastructure.DataLayers;
 using VignobleWEB.Core.Models;
+using VignobleWEB.Core.Models.Interne;
 
 namespace VignobleWEB.Core.Application.Repositories
 {
@@ -27,19 +28,28 @@ namespace VignobleWEB.Core.Application.Repositories
         #region Méthodes publiques
 
         #region Create (Ajout)
-        public bool CreateOrder(HeaderOrder headerOrder, List<LineOrder> lineOrders)
+        public async Task<bool> CreateOrder(CreateOrderDto createOrderDto)
         {
             try
             {
-                CheckDataOrder(headerOrder, lineOrders);
+                CheckDataOrder(createOrderDto);
 
-                _dataLayer.CreateOrder(headerOrder, lineOrders);
+                CreateOrderDto createOrder = new CreateOrderDto
+                {
+                    Status = createOrderDto.Status,
+                    Date = createOrderDto.Date,
+                    Paid = createOrderDto.Paid,
+                    SupplierId = createOrderDto.SupplierId,
+                    CustomerId = createOrderDto.CustomerId,
+                    LineOrders = createOrderDto.LineOrders
+                };
+
+                return await _dataLayer.CreateOrder(createOrder);
             }
             catch (DataLayersException ex)
             {
                 throw new RepositoryException($"Une erreur s'est produite dans la récupération des données via l'API : {ex.Message}");
             }
-            return true;
         }
         #endregion
 
@@ -60,14 +70,19 @@ namespace VignobleWEB.Core.Application.Repositories
         #endregion
 
         #region Méthodes privées
-        private void CheckDataOrder(HeaderOrder headerOrder, List<LineOrder> lineOrders)
+        private void CheckDataOrder(CreateOrderDto createOrderDto)
         {
-            if (headerOrder.NumOrder == 0|| headerOrder.NumOrder == null) { throw new RepositoryException("Le numéro de commande ne peut pas être nul !"); }
-            if (headerOrder.Customer == null) { throw new RepositoryException("L'adresse de livraison ne peut pas être vide !"); }
-            if (headerOrder.CustomerId == null) { throw new RepositoryException("L'id de l'adresse de livraison ne peut pas être nul"); }
-            if (headerOrder.SupplierId == null) { throw new RepositoryException("L'id du fournisseur ne peut pas être nul"); }
-            if (headerOrder.Supplier == null) { throw new RepositoryException("Le fournisseur ne peut pas être nul"); }
-            if (headerOrder.Date == null) { throw new RepositoryException("La date de création de la commande ne peut pas être nulle !"); }
+            if (createOrderDto.Status == null) { throw new RepositoryException("Le status ne peut pas être nul !"); }
+            if (createOrderDto.Date == null) { throw new RepositoryException("La date de création de la commande ne peut pas être nulle !"); }
+            if (createOrderDto.CustomerId == null) { throw new RepositoryException("L'adresse de livraison ne peut pas être vide"); }
+            if (createOrderDto.LineOrders == null) { throw new RepositoryException("La commande doit contenir au moins une ligne de commande !"); }
+
+            foreach (LineOrderDto line in createOrderDto.LineOrders)
+            {
+                if (line.HeaderOrderId == null) { throw new RepositoryException("L'entête de commande ne peut pas être nul !"); }
+                if (line.Quantity == null || line.Quantity == 0) { throw new RepositoryException("La quantité ne peut pas être égale à 0 !"); }
+                if (line.ProductId == null) { throw new RepositoryException("L'article ne peut pas être nul !"); }
+            }
         }
         #endregion
     }

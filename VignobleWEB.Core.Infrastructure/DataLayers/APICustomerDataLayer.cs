@@ -48,25 +48,18 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
 
             using (HttpClient client = _httpClientFactory.CreateClient("Auth"))
             {
-                try
-                {
-                    client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
-                    var url = $"{client.BaseAddress}customer";
-                    HttpResponseMessage response = await client.PostAsync(url, content);
+                client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
+                var url = $"{client.BaseAddress}customer";
+                HttpResponseMessage response = await client.PostAsync(url, content);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string responseBody = await response.Content.ReadAsStringAsync();
-                    }
-                    else
-                    {
-                        _logInfrastructure.LogInfo($"Erreur lors de la requête POST. Code d'erreur : {response.StatusCode}");
-                        Console.WriteLine(await response.Content.ReadAsStringAsync());
-                    }
-                }
-                catch (DataLayersException ex)
+                if (response.IsSuccessStatusCode)
                 {
-                    throw;
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    _logInfrastructure.LogInfo($"Erreur lors de la requête POST. Code d'erreur : {response.StatusCode}");
+                    Console.WriteLine(await response.Content.ReadAsStringAsync());
                 }
             }
             return true;

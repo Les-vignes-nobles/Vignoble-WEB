@@ -104,6 +104,8 @@ namespace VignobleWEB.Pages.Account
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
+                    return RedirectToPage("/Account/Login");
+
                 }
 
                 foreach (var error in resultUser.Errors)

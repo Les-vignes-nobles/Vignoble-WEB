@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VignobleWEB.Core.Models;
+using VignobleWEB.Core.Models.Interne;
 
 namespace VignobleWEB.Core.Interfaces.Infrastructure.DataLayers
 {
     public interface IHeaderOrderDataLayer
     {
         #region Create 
-        bool CreateOrder(HeaderOrder headerOrder, List<LineOrder> lineOrders);
+        Task<bool> CreateOrder(CreateOrderDto createOrderDto);
         #endregion
 
         #region Read

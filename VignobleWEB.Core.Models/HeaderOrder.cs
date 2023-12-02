@@ -14,10 +14,10 @@ namespace VignobleWEB.Core.Models
         public DateTime Date { get; set; }
         public bool Paid { get; set; }
 
-        public int? SupplierId { get; set; }
+        public Guid? SupplierId { get; set; }
         public Supplier? Supplier { get; set; }
 
-        public int CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
         public Customer Customer { get; set; }
     }
 }

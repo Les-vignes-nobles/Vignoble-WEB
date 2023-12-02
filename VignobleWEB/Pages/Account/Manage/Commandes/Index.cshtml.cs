@@ -59,9 +59,9 @@ namespace VignobleWEB.Pages.Account.Manage.Commandes
         #region Méthodes privées
         private async Task RecupListeCommande(IdentityUser identityUser)
         {
-            Customer customer = _customerRepository.GetAddress(identityUser.Id).Result; 
+            Customer customer = await _customerRepository.GetAddress(identityUser.Email); 
 
-            ListeEnteteCommande = _headerOrderRepository.RecupererListeEnteteCommandeDunClient(customer.Id).Result;
+            ListeEnteteCommande = await _headerOrderRepository.RecupererListeEnteteCommandeDunClient(customer.Id);
             
         }
         #endregion

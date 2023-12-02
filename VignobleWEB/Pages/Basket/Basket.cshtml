@@ -74,7 +74,7 @@
                                                             <h6 class="text-muted mb-0">
                                                                 @{
                                                                     double priceProduct = Model.listCardItems[i].Quantity * Model.listProducts[i].UnitPrice;
-                                                                } @priceProduct €
+                                                                } @String.Format("{0:0.##}", priceProduct) €
                                                             </h6>
                                                             <input id="totalPriceProduct_@i" value="@priceProduct" hidden/>
                                                         </div>
@@ -135,7 +135,7 @@
                                     <hr class="my-4">
                                     <div class="d-flex justify-content-between mb-5">
                                         <h5 class="text-uppercase">Prix total</h5>
-                                        <h5 id="total-price">@Model.listProducts.Sum(x => x.UnitPrice) €</h5>
+                                        <h5 id="total-price"></h5>
                                     </div>
                                     <button type="submit" class="btn btn-dark btn-block btn-lg"
                                             data-mdb-ripple-color="dark" >
@@ -158,7 +158,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        let productTotalJs = parseFloat('@productTotal');
+        let productTotalJs = parseFloat(totalPriceWithOutTransports);
         let tokenJs = '@token';
 
         $('select#dropdown-transports').change(function (event) {

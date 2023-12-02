@@ -88,6 +88,9 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #endregion
 
         #region Update (Modification)
+        #endregion
+
+        #region Delete (Suppression)
         public async Task<bool> DeleteUser(string guidUser)
         {
             using var client = _httpClientFactory.CreateClient("Auth");
@@ -100,9 +103,6 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
 
             return true;
         }
-        #endregion
-
-        #region Delete (Suppression)
         #endregion
 
         #endregion

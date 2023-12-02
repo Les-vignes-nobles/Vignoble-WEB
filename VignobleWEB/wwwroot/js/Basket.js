@@ -10,35 +10,6 @@ function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
-//for (let y = 0; y < cartItems.length; y++) {
-//    document.getElementById("btnSupp[" + y + "]").addEventListener("click", function () {
-
-//        if (cartItems !== null) {
-
-//            for (var i = 0; i < cartItems.length; i++) {
-//                var item = cartItems[i];
-
-
-//                if (item.IdProduct == document.getElementById("listProducts[" + y + "].Id").value) {
-//                    //cartItems = cartItems.filter(function (element) {
-//                    //    return element !== item.IdProduct;
-//                    //});
-//                    delete cartItems[i];
-//                    setCookie('CardItem', cartItems);
-//                }
-//            }
-
-//            if (cartItems.length === 0) {
-//                console.log("vide");
-//            }
-//        }
-//    });
-
-
-
-//}
-
-
 
 document.addEventListener("DOMContentLoaded", function () {
     // Récupérer tous les éléments avec la classe 'inputClass'
@@ -108,5 +79,7 @@ for (var i = 0; i < cartItems.length; i++) {
     totalPriceWithOutTransports = parseFloat(totalPriceWithOutTransports) + parseFloat(valueToAdd);
 }
 
-document.getElementById("totalPriceWithOutTransports").innerHTML = "Total : " + totalPriceWithOutTransports.toString().replace(".", ",") + " €";
+document.getElementById("totalPriceWithOutTransports").innerHTML = "Total : " + totalPriceWithOutTransports.toFixed(2).toString().replace(".", ",") + " €";
+
+document.getElementById("total-price").innerHTML = totalPriceWithOutTransports.toFixed(2).toString().replace(".", ",") + " €";
 
