@@ -21,7 +21,7 @@
                 <p class="lead">@Model.ProductDetails.Description</p>
                 <div class="d-flex">
                     <input asp-for="@Model.CardItem.IdProduct" value="@Model.ProductDetails.Id" hidden/>
-                    <input class="form-control text-center me-3" id="inputQuantity" type="number" asp-for="@Model.CardItem.Quantity" value="1" style="max-width: 3rem" />
+                    <input class="form-control text-center me-3" id="inputQuantity" type="number" asp-for="@Model.CardItem.Quantity" value="1" style="max-width: 6rem" min="1"/>
                     <button class="btn btn-outline-dark flex-shrink-0" type="submit" >
                         <i class="bi-cart-fill me-1"></i>
                         Ajouter au panier

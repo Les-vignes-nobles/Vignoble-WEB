@@ -61,7 +61,7 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         #endregion
 
         #region Read (Lecture)
-        public async Task<List<HeaderOrder>> RecupererListeEnteteCommandeDunClient(Guid idUser)
+        public async Task<List<HeaderOrder>> GetListHeaderOrderByCustomer(Guid idUser)
         {
             using var client = _httpClientFactory.CreateClient("Auth");
             client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
@@ -73,6 +73,20 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
 
             var json = await req.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<HeaderOrder>>(json) ?? new List<HeaderOrder>();
+        }
+
+        public async Task<HeaderOrder> GetHeaderOrderById(Guid idHeaderOrder)
+        {
+            using var client = _httpClientFactory.CreateClient("Auth");
+            client.BaseAddress = new Uri(_config.Value.BaseUrl ?? "");
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var url = $"{client.BaseAddress}headerOrder/{idHeaderOrder}";
+            var req = await client.GetAsync(url);
+            if (!req.IsSuccessStatusCode)
+                throw new DataLayersException(req.StatusCode.ToString());
+
+            var json = await req.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<HeaderOrder>(json) ?? new HeaderOrder();
         }
         #endregion
 

@@ -54,11 +54,23 @@ namespace VignobleWEB.Core.Application.Repositories
         #endregion
 
         #region Read (Lecture)
-        public Task<List<HeaderOrder>> RecupererListeEnteteCommandeDunClient(Guid idUser)
+        public Task<List<HeaderOrder>> GetListHeaderOrderByCustomer(Guid idUser)
         {
             try
             {
-                return _dataLayer.RecupererListeEnteteCommandeDunClient(idUser);
+                return _dataLayer.GetListHeaderOrderByCustomer(idUser);
+            }
+            catch (DataLayersException ex)
+            {
+                throw new RepositoryException($"Une erreur s'est produite dans la récupération des données via l'API : {ex.Message}");
+            }
+        }
+
+        public async Task<HeaderOrder> GetHeaderOrderById(Guid idHeaderOrder)
+        {
+            try
+            {
+                return await _dataLayer.GetHeaderOrderById(idHeaderOrder);
             }
             catch (DataLayersException ex)
             {

@@ -9,8 +9,9 @@ namespace VignobleWEB.Core.Models
     public class HeaderOrder
     {
         public Guid Id { get; set; }
-        public int NumOrder { get; set; }
-        public int Status { get; set; }
+        public string NumOrder { get; set; }
+        public StatusOrder Status { get; set; }
+        public int StatusId { get; set; }
         public DateTime Date { get; set; }
         public bool Paid { get; set; }
 

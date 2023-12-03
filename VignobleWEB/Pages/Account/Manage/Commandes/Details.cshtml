@@ -1,0 +1,70 @@
+﻿@page "/Account/Manage/Commandes/Details/{idCommande:guid}"
+@model VignobleWEB.Pages.Account.Manage.Commandes.DetailsModel
+@{
+    ViewData["Title"] = "Commandes";
+    ViewData["ActivePage"] = ManageNavPages.Commande;
+}
+@section Scripts {
+            <script src="~/js/gestionMessageModal.js" asp-append-version="true"></script>
+            <partial name="_ValidationScriptsPartial" />
+}
+@if (Model.MessagePourLaModal != null && Model.MessagePourLaModal.Message != string.Empty)
+{
+    Html.RenderPartial("./VuePartielle/Message", Model.MessagePourLaModal);
+}
+<h3>@ViewData["Title"]</h3>
+@*Page avec le détail d'une commande*@
+    <div class="entetePage titreSeparateur">Détails de la commande N° @Model.headerOrder.NumOrder</div>
+
+    <table class="table table-striped table-bordered">
+        <tbody>
+            <tr>
+                <td>Numéro de commande : @Model.headerOrder.NumOrder</td>
+                <td>Statut : @Model.statusOrders.Where(item => item.Id == Model.headerOrder.StatusId).Single().Name</td>
+            </tr>
+
+            <tr>
+                <td>Adresse : @Model.headerOrder.Customer.Address</td>
+                <td>Code postal : @Model.headerOrder.Customer.ZipCode</td>
+            </tr>
+
+            <tr>
+                <td>Ville : @Model.headerOrder.Customer.Town</td>
+                <td>Pays : @Model.headerOrder.Customer.Country</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="titreSeparateur">Article(s)</div>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Référence</th>
+                <th>Quantité</th>
+                <th>prix unitaire</th>
+                <th>prix total</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (Core.Models.LineOrder line in Model.linesOrder)
+        {
+            <tr>
+                <td>
+                    <div class="row">
+                        <div class="col-md-2 col-lg-2 col-xl-2">
+                            <img src="data:image/png;base64,@line.Product.Picture.ContentMini" class="img-fluid rounded-3"> 
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-xl-2">
+                            @line.Product.Name
+                        </div>  
+                    </div>
+                </td>
+                <td>@line.Quantity</td>
+                <td>@line.Product.UnitPrice €</td>
+                <td>@{ 
+                    double price = line.Product.UnitPrice * line.Quantity; 
+                    } @price €</td>
+            </tr>
+        }
+        </tbody>
+    </table>

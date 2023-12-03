@@ -11,11 +11,18 @@ namespace VignobleWEB.Core.Interfaces.Application.Repositories
 
         #region Read
         /// <summary>
-        /// Permet de récuperer la lsite des entete de commande du client
+        /// Permet de récuperer la liste des entetes de commandes du client
         /// </summary>
         /// <param name="idUser">Id de l'user</param>
         /// <returns>Liste des entetes</returns>
-        Task<List<HeaderOrder>> RecupererListeEnteteCommandeDunClient(Guid idUser);
+        Task<List<HeaderOrder>> GetListHeaderOrderByCustomer(Guid idUser);
+
+        /// <summary>
+        /// Permet de récuperer un entete de commande
+        /// </summary>
+        /// <param name="idHeaderOrder">Id de l'entete de commande</param>
+        /// <returns></returns>
+        Task<HeaderOrder> GetHeaderOrderById(Guid idHeaderOrder);
         #endregion
 
         #region Update

@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/Account/Manage/Commandes"
 @model VignobleWEB.Pages.Account.Manage.Commandes.IndexModel
 @{
     ViewData["Title"] = "Commandes";
@@ -35,7 +35,7 @@
                     {
                         <tr>
                             <td>@enteteCommande.NumOrder</td>
-                            <td>@enteteCommande.Status</td>
+                            <td>@Model.statusOrders.Where(item => item.Id == enteteCommande.StatusId).Single().Name</td>
                             <td>@enteteCommande.Date</td>
                             @if (enteteCommande.Paid == true)
                             {
@@ -47,7 +47,7 @@
                             }
                                 
                             <td style="text-align: center">
-                                <a asp-page="/References/Details" asp-route-idReference="@enteteCommande.NumOrder">
+                                <a asp-page="/Account/Manage/Commandes/Details" asp-route-idCommande="@enteteCommande.Id">
                                     <img src="/img/details.png" style="width: 32px;" alt="logo">
                                 </a>
                             </td>

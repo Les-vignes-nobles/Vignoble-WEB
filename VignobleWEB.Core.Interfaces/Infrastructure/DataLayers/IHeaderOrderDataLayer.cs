@@ -20,7 +20,14 @@ namespace VignobleWEB.Core.Interfaces.Infrastructure.DataLayers
         /// </summary>
         /// <param name="idUser">Id de l'user</param>
         /// <returns>Liste des entetes</returns>
-        Task<List<HeaderOrder>> RecupererListeEnteteCommandeDunClient(Guid idUser);
+        Task<List<HeaderOrder>> GetListHeaderOrderByCustomer(Guid idUser);
+
+        /// <summary>
+        /// Permet de récuperer un entete de commande
+        /// </summary>
+        /// <param name="idHeaderOrder">Id de l'entete de commande</param>
+        /// <returns></returns>
+        Task<HeaderOrder> GetHeaderOrderById(Guid idHeaderOrder);
         #endregion
 
         #region Update

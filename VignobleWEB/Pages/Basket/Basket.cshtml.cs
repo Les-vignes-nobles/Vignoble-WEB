@@ -122,11 +122,17 @@ public class BasketModel : PageModel
         catch (RepositoryException ex)
         {
             _logRepository.LogAvertissement(ex.Message);
+
+            GetListShop();
+            GetListTransports();
         }
         catch (Exception ex)
         {
             MessagePourLaModal.Message = "Une erreur imprévue s'est produite, si le problème perciste contacter le service informatique";
             _logRepository.LogErreur("Une erreut imprévu s'est produite !", ex);
+
+            GetListShop();
+            GetListTransports();
         }
 
         return result;

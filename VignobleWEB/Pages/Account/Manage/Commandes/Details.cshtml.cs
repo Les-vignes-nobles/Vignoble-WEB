@@ -8,30 +8,30 @@ using VignobleWEB.Core.Models;
 
 namespace VignobleWEB.Pages.Account.Manage.Commandes
 {
-    public class IndexModel : PageModel
+    public class DetailsModel : PageModel
     {
         #region Champs
         private readonly IHeaderOrderRepository _headerOrderRepository;
+        private readonly ILineOrderRepository _lineOrderRepository;
         private readonly ICustomerRepository _customerRepository;
+        private readonly IPictureRepository _pictureRepository;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogRepository _logRepository;
         #endregion
 
         #region Constructeur
-        public IndexModel(IHeaderOrderRepository headerOrderRepository, ICustomerRepository customerRepository, UserManager<IdentityUser> userManager, ILogRepository logRepository)
+        public DetailsModel(IHeaderOrderRepository headerOrderRepository, ILineOrderRepository lineOrderRepository, ICustomerRepository customerRepository, IPictureRepository pictureRepository, UserManager<IdentityUser> userManager, ILogRepository logRepository)
         {
             _headerOrderRepository = headerOrderRepository;
+            _lineOrderRepository = lineOrderRepository;
             _customerRepository = customerRepository;
+            _pictureRepository = pictureRepository;
             _userManager = userManager;
             _logRepository = logRepository;
         }
         #endregion
-
-        #region Méthodes publiques
         public async Task<IActionResult> OnGet()
         {
-            IActionResult result = Page();
-
             try
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -40,7 +40,9 @@ namespace VignobleWEB.Pages.Account.Manage.Commandes
                     return NotFound($"Impossible de charger l'utilisateur avec l'ID '{_userManager.GetUserId(User)}'.");
                 }
 
-                await RecupListeCommande(user);
+                Guid id = new Guid(HttpContext.Request.RouteValues["idCommande"].ToString());
+
+                await getOrder(id);
             }
             catch (RepositoryException ex)
             {
@@ -52,30 +54,31 @@ namespace VignobleWEB.Pages.Account.Manage.Commandes
                 _logRepository.LogErreur("Une erreut imprévu s'est produite !", ex);
             }
 
-            return result;
+            return Page();
         }
-        #endregion
 
         #region Méthodes privées
-        private async Task RecupListeCommande(IdentityUser identityUser)
+        private async Task getOrder(Guid idHeaderOrder)
         {
-            Customer customer = await _customerRepository.GetAddress(identityUser.Email); 
+            headerOrder = await _headerOrderRepository.GetHeaderOrderById(idHeaderOrder);
 
-            ListeEnteteCommande = await _headerOrderRepository.GetListHeaderOrderByCustomer(customer.Id);
+            linesOrder = await _lineOrderRepository.GetLinesOrderByHeaderOrder(idHeaderOrder);
+
+            //Faut récup les img des produits
+
+            foreach (LineOrder line in linesOrder)
+            {
+                line.Product.Picture = await _pictureRepository.GetImageById(line.Product.PictureId);
+            }
 
             statusOrders = StatusOrder.getList();
-            
         }
         #endregion
 
-        #region Propriétés
-        [TempData]
-        public string StatusMessage { get; set; }
-
-        public List<HeaderOrder> ListeEnteteCommande { get; set; } = new List<HeaderOrder>();
-
-        public List<StatusOrder> statusOrders { get; set; }
-
+        #region Propriétées
+        public HeaderOrder headerOrder { get; set; } = new();
+        public List<LineOrder> linesOrder { get; set; } = new();
+        public List<StatusOrder> statusOrders { get; set; } = new();
         public Core.Models.Interne.MessageModal MessagePourLaModal { get; set; } = new() { Titre = "Une erreur s'est produite" };
         #endregion
     }
