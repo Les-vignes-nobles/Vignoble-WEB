@@ -95,19 +95,22 @@
                 <label asp-for="customer.Gender" class="col-sm-3 control-label">Genre* :</label>
                 <div class="col-sm-9">
                     <div>
-                        <select class="form-control" asp-for="customer.Gender">
+                        <select class="form-control" asp-for="customer.Gender" required>
                             <option value="-1">Veuillez choisir un genre</option>
                             <option value="Male">Homme</option>
                             <option value="Female">Femme</option>
                             <option value="Other">Autre</option>
                         </select>
+                         <span asp-validation-for="customer.Gender" class="text-danger"></span>
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
                 <label>
-                    <input type="checkbox" id="acceptRules">Rules
+                    <input type="checkbox" asp-for="RulesChecked" required>En cochant cette case, vous acceptez les 
+                    <a asp-page="/Privacy">conditions d'utilisation</a>* du site.
+                    <span asp-validation-for="RulesChecked" class="text-danger"></span>
                 </label>
             </div> <!-- /.form-group -->
             <div class="form-group">

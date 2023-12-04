@@ -33,7 +33,7 @@ namespace VignobleWEB.Pages.Articles
             {
                 string idReference = HttpContext.Request.RouteValues["idReference"].ToString();
                 getProduct(idReference);
-                getAllProducts();
+                getAllProducts(idReference);
             }
             catch (RepositoryException ex)
             {
@@ -56,7 +56,7 @@ namespace VignobleWEB.Pages.Articles
             {
                 string idReference = HttpContext.Request.RouteValues["idReference"].ToString();
                 getProduct(idReference);
-                getAllProducts();
+                getAllProducts(idReference);
 
                 if (Request.Cookies["CardItem"] == null)
                 {
@@ -130,9 +130,17 @@ namespace VignobleWEB.Pages.Articles
         {
             ProductDetails = _productRepository.GetProductById(guidProduct).Result;
         }
-        private void getAllProducts()
+        private void getAllProducts(string idReference)
         {
-            Products = _productRepository.GetAllActiveProducts().Result;
+            List<Product> allProducts = _productRepository.GetAllActiveProducts().Result;
+
+            foreach (Product product in allProducts)
+            {
+                if (product.Id.ToString() != idReference)
+                {
+                    Products.Add(product);
+                }
+            }
         }
         #endregion
 

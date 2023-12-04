@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Serilog;
@@ -68,50 +69,53 @@ namespace VignobleWEB.Pages.Account
 
             try
             {
-                returnUrl ??= Url.Content("/Index");
-
-                var user = CreateUser();
-
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                var resultUser = await _userManager.CreateAsync(user, Input.Password);
-
-                if (resultUser.Succeeded)
+                if (RulesChecked == true)
                 {
-                    _logger.LogInformation($"Le compte à bien été créé pour '{user.Email}' ");
 
-                    CreateAdress(user);
+                    returnUrl ??= Url.Content("/Index");
 
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = userId, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
+                    var user = CreateUser();
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Veuillez confirmer votre mail",
-                        $"Veuillez confirmer votre compte en <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliquant ici</a>.");
+                    await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                    await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                    await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                    var resultUser = await _userManager.CreateAsync(user, Input.Password);
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    if (resultUser.Succeeded)
                     {
-                        return RedirectToPage("/Account/RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        _logger.LogInformation($"Le compte à bien été créé pour '{user.Email}' ");
+
+                        CreateAdress(user);
+
+                        var userId = await _userManager.GetUserIdAsync(user);
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { userId = userId, code = code, returnUrl = returnUrl },
+                            protocol: Request.Scheme);
+
+                        await _emailSender.SendEmailAsync(Input.Email, "Veuillez confirmer votre mail",
+                            $"Veuillez confirmer votre compte en <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliquant ici</a>.");
+
+                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        {
+                            return RedirectToPage("/Account/RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
                     }
-                    else
+
+                    foreach (var error in resultUser.Errors)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
-                    return RedirectToPage("/Account/Login");
-
                 }
-
-                foreach (var error in resultUser.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                
             }
             catch (RepositoryException ex)
             {
@@ -175,27 +179,33 @@ namespace VignobleWEB.Pages.Account
 
         [BindProperty] public Customer customer { get; set; } = new Customer();
 
+        [BindProperty]
+        [Required(ErrorMessage = "Vous devez accepter les conditions d'utilisation pour pouvoir vous inscrire !")]
+        public bool RulesChecked { get; set; } = new bool();
+
         public Core.Models.Interne.MessageModal MessagePourLaModal { get; set; } = new() { Titre = "Une erreur s'est produite" };
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "L'adresse mail est requise")]
             [EmailAddress]
             [Display(Name = "Email")]
+            
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Le mot de passe est requis")]
             [StringLength(100, ErrorMessage = "La mot de passe doit comporter au moins {2} et au maximum {1} caractères.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Mot de passe")]
             public string Password { get; set; }
 
+            [Required(ErrorMessage = "Le mot de passe de confirmation est requis")]
             [DataType(DataType.Password)]
             [Display(Name = "Confirmer le mot de passe")]
             [Compare("Password", ErrorMessage = "Le mot de passe et le mot de passe de confirmation ne correspondent pas.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Le numéro de téléphone est requis")]
             [Phone]
             [Display(Name = "Numéro de téléphone")]
             public string PhoneNumber { get; set; }

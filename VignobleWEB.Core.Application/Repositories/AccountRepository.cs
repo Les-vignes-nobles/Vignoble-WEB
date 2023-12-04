@@ -63,7 +63,7 @@ namespace VignobleWEB.Core.Application.Repositories
         private void VerifDonneesCreationUser(User user, Customer customer)
         {
             if (user.Email == null || user.Email == string.Empty) { throw new RepositoryException("L'adresse mail ne peut pas être vide !"); }
-            if (user.BirthDay == null || user.BirthDay >= DateTime.Today) { throw new RepositoryException("La date n'est pas valide !"); }
+            //if (user.BirthDay == null || user.BirthDay >= DateTime.Today) { throw new RepositoryException("La date n'est pas valide !"); }
             if (user.Password == null || user.Password == string.Empty) { throw new RepositoryException("Le mot de passe ne peut pas être nul !"); }
 
             if (customer.Country == null || customer.Country == string.Empty) { throw new RepositoryException("Le pays ne peut pas être vide !"); }
