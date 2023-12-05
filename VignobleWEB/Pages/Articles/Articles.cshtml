@@ -19,6 +19,8 @@
             <input class="form-control" asp-for="SearchProduct" type="text" value="@Model.SearchProduct" />
         </div>
         <div class="col">
+            <label asp-for="ChoiceFilter">Trier par :</label>
+            <select class="form-control" asp-items="@Model.FilterList" asp-for="ChoiceFilter"></select>
         </div>
     </div>
     <div class="row">

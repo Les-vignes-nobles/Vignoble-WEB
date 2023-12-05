@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System.Drawing;
 using VignobleWEB.Core.Application.RepositoriesException;
@@ -34,7 +35,8 @@ namespace VignobleWEB.Pages.Articles
 
             try
             {
-                RecupererListeProduits(string.Empty);
+                GetListProducts(string.Empty, 0);
+                InitFilter();
             }
             catch (RepositoryException ex)
             {
@@ -55,7 +57,8 @@ namespace VignobleWEB.Pages.Articles
 
             try
             {
-                RecupererListeProduits(SearchProduct);
+                GetListProducts(SearchProduct, ChoiceFilter);
+                InitFilter();
             }
             catch (RepositoryException ex)
             {
@@ -73,15 +76,51 @@ namespace VignobleWEB.Pages.Articles
         #endregion
 
         #region M�thodes priv�es
-        private void RecupererListeProduits(string searchProduct)
+        private void GetListProducts(string searchProduct, int choiceFilter = 0)
         {
-            ListProducts = _productRepository.GetAllActiveProductsResearch(searchProduct);
+            ListProducts = _productRepository.GetAllActiveProductsResearch(searchProduct, ChoiceFilter);
             SearchProduct = searchProduct;
+            ChoiceFilter = choiceFilter;
+        }
+
+        private void InitFilter()
+        {
+            FilterList.Add(new SelectListItem
+            {
+                Text = "",
+                Value = Convert.ToString(0)
+            });
+
+            FilterList.Add(new SelectListItem
+            {
+                Text = "Par ordre alphabétique",
+                Value = Convert.ToString(1)
+            });
+
+            FilterList.Add(new SelectListItem
+            {
+                Text = "Par prix croissant",
+                Value = Convert.ToString(2)
+            });
+
+            FilterList.Add(new SelectListItem
+            {
+                Text = "Par prix décroissant",
+                Value = Convert.ToString(3)
+            });
+
+            FilterList.Add(new SelectListItem
+            {
+                Text = "Par popularité",
+                Value = Convert.ToString(4)
+            });
         }
         #endregion
 
         #region Propriétés
         [BindProperty] public string SearchProduct { get; set; } = string.Empty;
+        [BindProperty] public int ChoiceFilter { get; set; } = 0;
+        public List<SelectListItem> FilterList { get; set; } = new List<SelectListItem>();
         public List<Product> ListProducts { get; set; } = new List<Product>();
         public Core.Models.Interne.MessageModal MessagePourLaModal { get; set; } = new() { Titre = "Une erreur s'est produite" };
 

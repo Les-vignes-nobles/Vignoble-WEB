@@ -15,7 +15,7 @@ namespace VignobleWEB.Core.Interfaces.Application.Repositories
         /// </summary>
         /// <param name="searchProduct"></param>
         /// <returns></returns>
-        List<Product> GetAllActiveProductsResearch(string searchProduct);
+        List<Product> GetAllActiveProductsResearch(string searchProduct, int choiceFilter = 0);
 
         /// <summary>
         /// Recupère les données du produits

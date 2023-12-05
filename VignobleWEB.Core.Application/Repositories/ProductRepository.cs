@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using VignobleWEB.Core.Application.RepositoriesException;
 using VignobleWEB.Core.Infrastructure.ExceptionPersonnalisee;
 using VignobleWEB.Core.Interfaces.Application.Repositories;
@@ -38,10 +39,6 @@ namespace VignobleWEB.Core.Application.Repositories
 
                 foreach (Product product in listAllProducts)
                 {
-                    if (product.PictureId != null)
-                    {
-                        //product.Picture = _pictureRepository.GetImageById(product.PictureId).Result;
-                    }
                     listActiveProducts.Add(product);
                 }
                 
@@ -71,15 +68,49 @@ namespace VignobleWEB.Core.Application.Repositories
             }
         }
 
-        public List<Product> GetAllActiveProductsResearch(string searchProduct)
+        public List<Product> GetAllActiveProductsResearch(string searchProduct, int choiceFilter = 0)
         {
             List<Product> listActiveProduct = GetAllActiveProducts().Result;
 
-            if (searchProduct == null || searchProduct == string.Empty)
+            if (searchProduct.IsNullOrEmpty() && choiceFilter > 0)
             {
-                return listActiveProduct;
+                List<Product> listProductFilter = new List<Product>();
+
+                if (choiceFilter == 1)
+                {
+                    foreach (Product product in listActiveProduct.OrderBy(item => item.Name))
+                    {
+                        listProductFilter.Add(product);
+                    }
+                }
+
+                if (choiceFilter == 2)
+                {
+                    foreach (Product product in listActiveProduct.OrderBy(item => item.UnitPrice))
+                    {
+                        listProductFilter.Add(product);
+                    }
+                }
+
+                if (choiceFilter == 3)
+                {
+                    foreach (Product product in listActiveProduct.OrderByDescending(item => item.UnitPrice))
+                    {
+                        listProductFilter.Add(product);
+                    }
+                }
+
+                if (choiceFilter == 4)
+                {
+                    foreach (Product product in listActiveProduct.OrderBy(item => item.Year))//TODO : Avoir l'article le plus populaire en 1er
+                    {
+                        listProductFilter.Add(product);
+                    }
+                }
+
+                return listProductFilter;
             }
-            else
+            else if (searchProduct != string.Empty && choiceFilter == 0)
             {
                 List<Product> listActiveProductResearch= new List<Product>();
 
@@ -90,7 +121,46 @@ namespace VignobleWEB.Core.Application.Repositories
                         listActiveProductResearch.Add(product);
                     }
                 }
+
                 return listActiveProductResearch;
+            }
+            else if (searchProduct != string.Empty && choiceFilter > 0)
+            {
+                List<Product> listActiveProductResearch = new List<Product>();
+
+                foreach (Product product in listActiveProduct)
+                {
+                    if (product.Name.ToLower().Contains(searchProduct.ToLower()) || product.Description.ToLower().Contains(searchProduct.ToLower()))
+                    {
+                        listActiveProductResearch.Add(product);
+                    }
+                }
+
+                if (choiceFilter == 1)
+                {
+                    listActiveProductResearch.Sort();
+                }
+
+                if (choiceFilter == 2)
+                {
+                    listActiveProductResearch.OrderBy(x => x.UnitPrice);
+                }
+
+                if (choiceFilter == 3)
+                {
+                    listActiveProductResearch.OrderByDescending(x => x.UnitPrice);
+                }
+
+                if (choiceFilter == 4)
+                {
+                    listActiveProductResearch.OrderBy(item => item.Year); //TODO : Avoir l'article le plus populaire en 1er
+                }
+
+                return listActiveProductResearch;
+            }
+            else
+            {
+                return listActiveProduct;
             }
         }
         #endregion
