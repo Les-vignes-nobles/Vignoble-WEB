@@ -51,7 +51,8 @@ namespace VignobleWEB.Core.Models
 
         public ICollection<HeaderOrder>? HeaderOrders { get; set; }
 
+        [JsonProperty("userId")]
         public string UserId { get; set; }
-        public User? User { get; set; }
+        //public User? User { get; set; }
     }
 }

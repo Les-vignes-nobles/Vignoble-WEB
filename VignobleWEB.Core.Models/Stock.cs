@@ -14,6 +14,5 @@ namespace VignobleWEB.Core.Models
         public int QuantitySaved { get; set; }
         public int QuantityMin { get; set; }
         public int QuantityMax { get; set; }
-        public ICollection<Product> Products { get; set; }
     }
 }

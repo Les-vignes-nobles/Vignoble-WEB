@@ -14,7 +14,7 @@ namespace VignobleWEB.Core.Models.Interne
         public bool Paid { get; set; }
 
         [JsonPropertyName("supplierId")]
-        public Guid? SupplierId { get; set; } = new Guid("56d3b267-d07a-421d-a207-70ff1b2b08de");
+        public Guid? SupplierId { get; set; } = new Guid("00000000-0000-0000-0000-000000000000");
 
         [JsonPropertyName("customerId")]
         public Guid CustomerId { get; set; }

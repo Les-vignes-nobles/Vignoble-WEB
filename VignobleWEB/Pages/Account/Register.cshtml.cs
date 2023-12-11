@@ -139,7 +139,7 @@ namespace VignobleWEB.Pages.Account
             userAPI.UserName = user.Email;
             userAPI.Password = Input.Password;
 
-            customer.User = userAPI;
+            //customer.User = userAPI;
             customer.UserId = user.Id;
             customer.PhoneNumber = user.PhoneNumber; 
             customer.Email = user.Email;

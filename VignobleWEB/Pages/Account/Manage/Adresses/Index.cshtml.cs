@@ -56,6 +56,9 @@ namespace VignobleWEB.Pages.Account.Manage.Adresses
         {
             try
             {
+                var user = await _userManager.GetUserAsync(User);
+                Customer.UserId = user.Id;
+
                 if (await _customerRepository.UpdateAddress(Customer))
                 {
                     return Page();
@@ -81,6 +84,7 @@ namespace VignobleWEB.Pages.Account.Manage.Adresses
         {
             var mail = await _userManager.GetEmailAsync(user);
             Customer = _customerRepository.GetAddress(mail).Result;
+            Customer.UserId = user.Id;
         }
         #endregion
 

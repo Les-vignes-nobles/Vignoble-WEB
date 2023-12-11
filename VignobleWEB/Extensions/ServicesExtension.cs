@@ -33,6 +33,7 @@ public static class ServicesExtension
         services.TryAddScoped<IHeaderOrderDataLayer, APIHeaderOrderDataLayer>();
         services.TryAddScoped<ILineOrderDataLayer, APILineOrderDataLayer>();
         services.TryAddScoped<IPictureDataLayer, APIPictureDataLayer>();
+        services.TryAddScoped<IStockDataLayer, APIStockDataLayer>();
 
         services.TryAddScoped<IProductRepository, ProductRepository>();
         services.TryAddScoped<ITransportRepository, TransportRepository>();
@@ -41,6 +42,7 @@ public static class ServicesExtension
         services.TryAddScoped<IHeaderOrderRepository, HeaderOrderRepository>();
         services.TryAddScoped<ILineOrderRepository, LineOrderRepository>();
         services.TryAddScoped<IPictureRepository, PictureRepository>();
+        services.TryAddScoped<IStockRepository, StockRepository>();
 
         services.TryAddScoped<ILogInfrastructure, LogInfrastructure>();
 

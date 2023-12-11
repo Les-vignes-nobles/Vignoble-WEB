@@ -13,14 +13,16 @@ namespace VignobleWEB.Pages.Articles
     {
         #region Champs
         private readonly IProductRepository _productRepository;
+        private readonly IStockRepository _stockRepository;
         private readonly ILogRepository _logRepository;
         #endregion
 
         #region Constructeur
-        public DetailsModel(IProductRepository productRepository, ILogRepository logRepository)
+        public DetailsModel(IProductRepository productRepository, ILogRepository logRepository, IStockRepository stockRepository)
         {
             _productRepository = productRepository;
             _logRepository = logRepository;
+            _stockRepository = stockRepository;
         }
         #endregion
 
@@ -129,6 +131,8 @@ namespace VignobleWEB.Pages.Articles
         private void getProduct(string guidProduct)
         {
             ProductDetails = _productRepository.GetProductById(guidProduct).Result;
+            ProductDetails.Stock = _stockRepository.GetStockById(ProductDetails.StockId).Result; 
+
         }
         private void getAllProducts(string idReference)
         {

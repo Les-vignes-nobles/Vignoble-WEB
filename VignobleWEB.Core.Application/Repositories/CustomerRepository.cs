@@ -61,7 +61,7 @@ namespace VignobleWEB.Core.Application.Repositories
             {
                 VerifIntegriteDonnees(customer);
 
-                return await _dataLayer.CreateCustomer(customer);
+                return await _dataLayer.UpdateAddress(customer);
             }
             catch (DataLayersException ex)
             {
@@ -76,7 +76,7 @@ namespace VignobleWEB.Core.Application.Repositories
         private void VerifIntegriteDonnees(Customer customer)
         {
             if (customer == null) { throw new RepositoryException("L'adresse de livraison ne peut pas être vide !"); }
-            if (customer.User == null) { throw new RepositoryException("L'utilsateur ne peut pas être vide !"); }
+            //if (customer.User == null) { throw new RepositoryException("L'utilsateur ne peut pas être vide !"); }
 
             if (customer.CustomerName == null || customer.CustomerName == string.Empty) { throw new RepositoryException("Le prénom ne peut pas être vide !"); }
             if (customer.CustomerSurname == null || customer.CustomerSurname == string.Empty) { throw new RepositoryException("Le nom ne peut pas être vide !"); }

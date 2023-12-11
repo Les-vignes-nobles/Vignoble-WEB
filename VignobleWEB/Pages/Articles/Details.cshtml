@@ -18,6 +18,11 @@
                 <div class="fs-5 mb-5">
                     <span>@Model.ProductDetails.UnitPrice €</span>
                 </div>
+                @if (Model.ProductDetails.Stock != null)
+                {
+                    <div class="small mb-1">Stock: @Model.ProductDetails.Stock.Quantity</div>
+                }
+
                 <p class="lead">@Model.ProductDetails.Description</p>
                 <div class="d-flex">
                     <input asp-for="@Model.CardItem.IdProduct" value="@Model.ProductDetails.Id" hidden/>

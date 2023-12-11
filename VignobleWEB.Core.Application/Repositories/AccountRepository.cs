@@ -73,7 +73,7 @@ namespace VignobleWEB.Core.Application.Repositories
             if (customer.CustomerSurname == null || customer.CustomerSurname == string.Empty) { throw new RepositoryException("Le nom ne peut pas être vide !"); }
             if (customer.Email == null || customer.Email == string.Empty) { throw new RepositoryException("L'adresse mail ne peut pas être vide !"); }
             if (customer.PhoneNumber == null || customer.PhoneNumber.ToString().Length == 0) { throw new RepositoryException("Le nuémro de téléphone ne peut pas être vide !"); }
-            if (customer.User == null) { throw new RepositoryException("L'utilisateur doit être défini !"); }
+            if (customer.UserId == null) { throw new RepositoryException("L'utilisateur doit être défini !"); }
         }
         #endregion
     }

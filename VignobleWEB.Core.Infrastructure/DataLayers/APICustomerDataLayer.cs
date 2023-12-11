@@ -41,7 +41,9 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
                 Address = customer.Address,
                 ZipCode = customer.ZipCode,
                 Town = customer.Town,
-                Country = customer.Country
+                Country = customer.Country,
+                Activated = customer.Activated,
+                UserId = customer.UserId,
             };
 
             HttpContent content = new StringContent(JsonConvert.SerializeObject(customerAdd), Encoding.UTF8, "application/json");
@@ -87,6 +89,7 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
         {
             Customer customerUpdate = new Customer
             {
+                Id = customer.Id,
                 CustomerSurname = customer.CustomerSurname,
                 CustomerName = customer.CustomerName,
                 Gender = customer.Gender,
@@ -95,10 +98,29 @@ namespace VignobleWEB.Core.Infrastructure.DataLayers
                 Address = customer.Address,
                 ZipCode = customer.ZipCode,
                 Town = customer.Town,
-                Country = customer.Country
+                Country = customer.Country,
+                UserId = customer.UserId,
             };
 
-            HttpContent content = new StringContent(JsonConvert.SerializeObject(customerUpdate), Encoding.UTF8, "application/json");
+            string jsonObject = string.Format("{{\"id\":\"{0}\", " +
+                "\"customerSurname\":\"{1}\", " +
+                "\"customerName\":\"{2}\", " +
+                "\"gender\":\"{3}\", " +
+                "\"phoneNumber\":\"{4}\", " +
+                "\"email\":\"{5}\"," +
+                "\"address\":\"{6}\", " +
+                "\"zipCode\":\"{7}\", " +
+                "\"town\":\"{8}\", " +
+                "\"country\":\"{9}\", " +
+                "\"activated\":\"{10}\", " +
+                "\"userId\":\"{11}\" " +
+                "}}", customer.Id, customer.CustomerSurname, customer.CustomerName, customer.Gender, customer.PhoneNumber, customer.Email,
+                customer.Address, customer.ZipCode, customer.Town, customer.Country, customer.Activated, customer.UserId);
+
+
+            string json = JsonConvert.SerializeObject(customerUpdate);
+
+            HttpContent content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
 
             using (HttpClient client = _httpClientFactory.CreateClient("Auth"))
             {
