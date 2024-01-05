@@ -1,7 +1,8 @@
 repo_name: Les-vignes-nobles/Vignoble-WEB
-report_id: ce725da3e4fbadff4eb12c944ca04df5
+report_id: 8b647a579929ccc7e2bc417976639e54
+version: 0.1
 repo_type: Public
-timestamp: '2023-12-14T10:29:10+00:00'
+timestamp: '2024-01-05T08:49:37+00:00'
 requested_by: SamuelCarrico
 provider: github
 branch: main
@@ -16,6 +17,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1015/1200px-C_Sharp_wordmark.svg.png
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB
   detection_source: Repo Metadata
 - name: CSS 3
   description: The latest evolution of the Cascading Style Sheets language
@@ -25,6 +27,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/6727/css.png
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB
   detection_source: Repo Metadata
 - name: JavaScript
   description: Lightweight, interpreted, object-oriented language with first-class
@@ -35,6 +38,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1209/javascript.jpeg
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB
   detection_source: Repo Metadata
 - name: ".NET"
   description: A free, cross-platform, open source developer platform for building
@@ -46,6 +50,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/1014/IoPy1dce_400x400.png
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB/blob/main/VignobleWEB/VignobleWEB.csproj
   detection_source: VignobleWEB/VignobleWEB.csproj
   last_updated_by: camille
   last_updated_on: 2023-06-01 13:00:51.000000000 Z
@@ -89,6 +94,7 @@ tools:
   category: Data Stores
   sub_category: Object Relational Mapper (ORM)
   image_url: https://img.stackshare.io/service/3251/no-img-open-source.png
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB/blob/main/VignobleWEB/VignobleWEB.csproj
   detection_source: VignobleWEB/VignobleWEB.csproj
   last_updated_by: camille
   last_updated_on: 2023-06-01 13:00:51.000000000 Z
@@ -101,6 +107,7 @@ tools:
   category: Data Stores
   sub_category: Object Relational Mapper (ORM)
   image_url: https://img.stackshare.io/service/10254/no-img-open-source.png
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB/blob/main/VignobleWEB/VignobleWEB.csproj
   detection_source: VignobleWEB/VignobleWEB.csproj
   last_updated_by: camille
   last_updated_on: 2023-06-01 13:00:51.000000000 Z
@@ -112,6 +119,7 @@ tools:
   category: Data Stores
   sub_category: Databases
   image_url: https://img.stackshare.io/service/1027/sql_server.png
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB/blob/main/VignobleWEB/VignobleWEB.csproj
   detection_source: VignobleWEB/VignobleWEB.csproj
   last_updated_by: Samuel C
   last_updated_on: 2023-11-06 19:15:32.000000000 Z
@@ -123,6 +131,7 @@ tools:
   category: Data Stores
   sub_category: Database Tools
   image_url: https://img.stackshare.io/service/109221/default_b888cdf5617d936aa6aacf130911906955508639.png
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB/blob/main/VignobleWEB/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt
   detection_source: VignobleWEB/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt
   last_updated_by: camille
   last_updated_on: 2023-06-01 13:00:51.000000000 Z
@@ -134,6 +143,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB
   detection_source: Repo Metadata
 - name: NuGet
   description: The package manager for .NET
@@ -143,6 +153,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/service/2637/6I3oEOP4_400x400.jpg
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB/blob/main/VignobleWEB/VignobleWEB.csproj
   detection_source: VignobleWEB/VignobleWEB.csproj
   last_updated_by: camille
   last_updated_on: 2023-06-01 13:00:51.000000000 Z
@@ -155,6 +166,7 @@ tools:
   category: Monitoring
   sub_category: Log Management
   image_url: https://img.stackshare.io/service/4283/5691010.png
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB/blob/main/VignobleWEB/VignobleWEB.csproj
   detection_source: VignobleWEB/VignobleWEB.csproj
   last_updated_by: camille
   last_updated_on: 2023-06-01 13:00:51.000000000 Z
@@ -167,6 +179,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Integrated Development Environment
   image_url: https://img.stackshare.io/service/1451/SR2hUhQN.png
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB/blob/main/VignobleWEB.sln
   detection_source: VignobleWEB.sln
   last_updated_by: camille
   last_updated_on: 2023-06-01 13:00:51.000000000 Z
@@ -191,6 +204,7 @@ tools:
   category: Communications
   sub_category: Large Language Model Tools
   image_url: https://img.stackshare.io/service/48790/default_5b6c6b73f1ff3775c85d2a1ba954cb87e30cbf13.jpg
+  detection_source_url: https://github.com/Les-vignes-nobles/Vignoble-WEB/blob/main/VignobleWEB/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt
   detection_source: VignobleWEB/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt
   last_updated_by: camille
   last_updated_on: 2023-06-01 13:00:51.000000000 Z
