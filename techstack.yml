@@ -2,7 +2,7 @@ repo_name: Les-vignes-nobles/Vignoble-WEB
 report_id: 8b647a579929ccc7e2bc417976639e54
 version: 0.1
 repo_type: Public
-timestamp: '2024-01-05T08:49:37+00:00'
+timestamp: '2024-02-29T18:39:41+00:00'
 requested_by: SamuelCarrico
 provider: github
 branch: main
@@ -99,7 +99,7 @@ tools:
   last_updated_by: camille
   last_updated_on: 2023-06-01 13:00:51.000000000 Z
 - name: Entity Framework Core
-  description: 'Lightweight and cross-platform version of the popular Entity Framework '
+  description: Lightweight and cross-platform version of the popular Entity Framework
   website_url: https://docs.microsoft.com/en-us/ef/core/
   license: MIT
   open_source: true
