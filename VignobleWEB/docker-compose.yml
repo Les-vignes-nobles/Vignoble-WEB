@@ -1,0 +1,37 @@
+services:
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vignoble-web
+    ports:
+      - "5004:80"
+      - "5005:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=aspnet-VignobleWEB;User Id=sa;Password=VotreMotDePasse123!;TrustServerCertificate=true;MultipleActiveResultSets=true;
+    depends_on:
+      - sqlserver
+    networks:
+      - vignoble_network
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "VotreMotDePasse123!"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+    networks:
+      - vignoble_network
+
+volumes:
+  sqlserverdata:
+
+networks:
+  vignoble_network:
+    external: true
